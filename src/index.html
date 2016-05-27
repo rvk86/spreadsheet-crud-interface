@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-beta.3/css/select2.min.css" />
+        <?!= templatePart('css'); ?>
+    </head>
+    <body>
+
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 100%"></div>
+        </div>
+
+        <div class="container">
+
+            <div class="col-sm-12">
+
+                <?!= templatePart('part_navbar'); ?>
+
+                <div id="dynamic-content"></div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- Modal that can by dynamically populated in scripts -->
+        <div class="modal fade" tabindex="-1" role="dialog" data-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"></h4>
+                    </div>
+                    <div class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default close-modal" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-beta.3/js/select2.min.js"></script>
+        <?!= templatePart('functions', params); ?>
+        <?!= templatePart('javascript', params); ?>
+    </body>
+</html>
+
+

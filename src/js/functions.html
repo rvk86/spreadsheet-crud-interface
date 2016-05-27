@@ -1,0 +1,122 @@
+<script>
+
+// Make query params available in this file
+<? for(var key in atts) {?>
+    var <?!= key; ?> = <?= atts[key]; ?>;
+<? } ?>
+
+
+function showForm(sheetName, target, rowId) {
+
+    runFunction('findRow', [sheetName, rowId], function(list) {
+        var fields = [];
+        for (var i in list[0]) {
+
+            // Underscored columns hidden
+            var options = list[0][i][0] === '_' ?
+                          {'type': 'hidden'} :
+                          JSON.parse(list[1][i]);
+
+            options['id'] = options['id'] || list[0][i];
+            options['value'] = rowId ? list[2][i] : '';
+
+            fields.push(options);
+        };
+
+        setContent(target, 'part_form', {
+            'sheetName': sheetName,
+            'fields': fields
+        });
+    });
+
+}
+
+
+function getFormValues(container) {
+
+    var values = [];
+    $(container).find('input, select, textarea').each(function() {
+        values.push($(this).val());
+    });
+
+    return values;
+
+}
+
+
+function getSheetRowsObject(rows) {
+    rows = JSON.parse(rows);
+
+    var rows = _.object(
+                        _.map(rows, function(row) { return row[2] + ' - ' + row[3]; }),
+                        _.map(rows, function(row) { return row[0]; }));
+
+    return rows;
+
+}
+
+
+function setContent(target, template, atts, after) {
+
+    $(target).empty();
+    appendContent(target, template, atts, after);
+
+}
+
+
+function appendContent(target, template, atts, after) {
+
+    runFunction('templatePart', [template, atts], function(content) {
+
+        $(target).append(content);
+
+        $('select').select2();
+        if(_.isFunction(after)) after.apply(this);
+
+    });
+
+};
+
+
+function runFunction(func, args, success) {
+
+    toggleProgress();
+
+    return google.script.run
+    .withSuccessHandler(wrap(success, false, toggleProgress))
+    .withFailureHandler(wrap(function(error) {
+        var title = 'Something went terribly wrong...';
+        showModal(title, error.message);
+    }, false, toggleProgress))[func].apply(this, args);
+
+}
+
+
+function toggleProgress() {
+
+    $('.progress').toggle();
+
+}
+
+
+function showModal(title, message) {
+
+    $('.modal-title').html(title);
+    $('.modal-body').html(message);
+    $('.modal').modal();
+
+};
+
+
+function wrap(fn, before, after) {
+
+    return function () {
+        if(_.isFunction(before)) before.apply(this, arguments);
+        var result = fn.apply(this, arguments);
+        if(_.isFunction(after)) after.call(this, result);
+        return result;
+    };
+
+};
+
+</script>

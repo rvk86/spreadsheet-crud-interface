@@ -1,0 +1,22 @@
+<form class="form-horizontal" data-sheet-name="<?= atts.sheetName; ?>">
+    <div class="row">
+        <div class="col-sm-offset-4 col-sm-4">
+            <h3><?= atts.sheetName; ?></h3>
+        </div>
+    </div>
+    <div class="row">
+        <fieldset>
+            <? for(var i in atts.fields) { ?>
+
+                <?!= templatePart('part_form_group', atts.fields[i]); ?>
+
+            <? } ?>
+            <div class="form-group">
+                <label class="col-sm-4 control-label"></label>
+                    <div class="col-sm-4">
+                    <div name="submit" class="btn btn-primary submit">Submit</div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</form>
