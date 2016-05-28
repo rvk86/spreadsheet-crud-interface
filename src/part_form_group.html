@@ -17,6 +17,9 @@ if(_.isArray(atts.options)) {
 
     rows = JSON.parse(getAllRows(atts.options));
 
+    // Remove title columns from result
+    _.each(_.range(titleColumns), function() { rows.shift(); });
+
     atts['options'] = _.object(
                         _.map(rows, function(row) { return row[0] + ' - ' + row[2] + ' - ' + row[3]; }),
                         _.map(rows, function(row) { return row[0]; }));

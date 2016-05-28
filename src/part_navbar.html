@@ -17,19 +17,18 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sheets <span class="caret"></span></a>
                     <ul id="sheets-dropdown" class="dropdown-menu">
-                        <? var sheets = getSheetList();
-                        var button_types = {'Add': 'show-add-form', 'Edit': 'show-edit-form', 'Delete': 'show-delete-form'};?>
+                        <? var sheets = getSheetList(); ?>
                         <? for(var i in sheets) { ?>
-                            <? for(var j in button_types) { ?>
                                 <li>
-                                    <a class="<?= button_types[j]; ?>" href="#" data-sheet-name="<?= sheets[i]; ?>">
-                                        <?= j + ' ' + sheets[i]; ?>
+                                    <a class="set-content"
+                                       href="#"
+                                       data-sheet-name="<?= sheets[i]; ?>"
+                                       data-template="part_table">
+                                        <?= sheets[i]; ?>
                                     </a>
                                 </li>
-                            <? } ?>
                             <li role="separator" class="divider"></li>
                         <? } ?>
-
                     </ul>
                 </li>
             </ul>

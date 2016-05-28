@@ -1,9 +1,9 @@
-function getColumnNames(sheetName) {
+function getColumnNames(s) {
 
-    var s = getSpreadsheet().getSheetByName(sheetName);
+    var columnNames = s.getRange(1, 1, titleColumns, s.getLastColumn()).getValues();
+    columnNames[1] = _.map(columnNames[1], function(cell) { return JSON.parse(cell); })
 
-    var columns = s.getRange(1, 1, titleColumns, s.getLastColumn()).getValues();
-    return columns;
+    return columnNames;
 
 }
 
@@ -12,7 +12,7 @@ function getAllRows(sheetName) {
 
     var s = getSpreadsheet().getSheetByName(sheetName);
 
-    var rows = getFullDataRange(s).getValues();
+    var rows = _getFullDataRange(s).getValues();
 
     // Stringify is necessary because of dates, probably
     return JSON.stringify(rows);
@@ -20,23 +20,36 @@ function getAllRows(sheetName) {
 }
 
 
-function findRow(sheetName, rowId) {
+function getFormFields(sheetName, rowId) {
 
     var s = getSpreadsheet().getSheetByName(sheetName);
 
-    var rows = JSON.parse(getAllRows(sheetName));
-    var row = _.filter(rows, function(r) { return Number(r[0]) === Number(rowId); })[0];
+    var columnNames = getColumnNames(s);
+    var rowPosition = rowId ? getRowPosition(s, rowId) : -1;
+    var row = rowPosition > -1 ? s.getRange(rowPosition, 1, 1, s.getLastColumn()).getValues()[0] : false;
 
-    var columns = getColumnNames(sheetName);
-    if(row) columns.push(row);
 
-    return columns;
+
+    var fields = [];
+    for (var i in columnNames[0]) {
+
+        var options = columnNames[1][i];
+        options['id'] = options['id'] || columnNames[0][i];
+        options['value'] = row ? row[i] : '';
+
+        fields.push(options);
+
+    };
+
+    return fields;
 
 }
 
 
-function getFullDataRange(s) {
+function _getFullDataRange(s, columns) {
 
-    return s.getRange(1 + titleColumns, 1, s.getLastRow() - titleColumns, s.getLastColumn());
-    
+    var columns = columns || s.getLastColumn();
+
+    return s.getRange(1, 1, s.getLastRow(), columns);
+
 }

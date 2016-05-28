@@ -2,115 +2,49 @@
 
 $(document).ready(function() {
 
-    var formContainer = '#dynamic-content';
-    var navBar = '#main-navbar';
-    var sheetsDropdown = '#sheets-dropdown';
-
     // Make query params available in this file
     <? for(var key in atts) {?>
         var <?!= key; ?> = <?= atts[key]; ?>;
     <? } ?>
 
-    $(navBar).on('click', '.show-add-form', function(e) {
+
+    $('body').on('click', '.trigger-action', function(e) {
 
         // make sure event is not fired multiple times
         if(e.handled === true) return;
         e.handled = true;
 
-        showForm($(this).data('sheet-name'), formContainer);
+        var data = $(this).data();
 
-    });
+        // A form-values data attribute will get the values of all fields in the specified container container
+        if(data.formValues) {
+            data.formValues = getFormValues(data.formValues)
+        }
 
+        runFunction(data.action, [data], function(result) {
 
-    $(navBar).on('click', '.show-edit-form', function(e) {
+            if(data.modal) {
+                showModal('Action completed succesfully', data.modal || result || 'Great!');
+            };
 
-        // make sure event is not fired multiple times
-        if(e.handled === true) return;
-        e.handled = true;
-
-        var sheetName = $(this).data('sheet-name');
-        var target = formContainer;
-
-            setContent(target, 'part_form', {
-                'sheetName': sheetName,
-                'fields': [{
-                    'id': 'row-list',
-                    'type': 'select',
-                    'options': sheetName
-                }]
-            });
-
-    });
-
-
-    $(navBar).on('click', '.show-delete-form', function(e) {
-
-        // make sure event is not fired multiple times
-        if(e.handled === true) return;
-        e.handled = true;
-
-        var sheetName = $(this).data('sheet-name');
-        var target = formContainer;
-
-        runFunction('getAllRows', [sheetName], function(rows) {
-
-            setContent(target, 'part_form', {
-                'sheetName': sheetName,
-                'fields': [{
-                    'id': 'row-list-delete',
-                    'type': 'select',
-                    'options': getSheetRowsObject(rows)
-                }]
-            }, function() {
-                $('#row-list-delete').select2();
-                $('.submit').addClass('delete');
-            });
-
-        });
-
-    });
-
-    $('body').on('click', '.delete', function(e) {
-
-        // make sure event is not fired multiple times
-        if(e.handled === true) return;
-        e.handled = true;
-
-        runFunction('deleteRow', [$(this).parents('form').data('sheet-name'), getFormValues(formContainer)[0]], function(content) {
-
-            $(formContainer).empty();
-            $('select').select2('val', '');
+            if(data.target && data.template) {
+                setContent(data.template, data);
+            }
 
         });
 
     });
 
 
-    $('body').on('change', '#row-list', function(e) {
+    $('body').on('click', '.set-content', function(e) {
 
         // make sure event is not fired multiple times
         if(e.handled === true) return;
         e.handled = true;
 
-        var sheetName = $(this).parents('form').data('sheet-name');
-        var recordId = $(this).val();
+        var data = $(this).data();
 
-        showForm(sheetName, formContainer, recordId);
-
-    });
-
-
-    $('body').on('click', '.submit', function(e) {
-
-        // make sure event is not fired multiple times
-        if(e.handled === true) return;
-        e.handled = true;
-
-        runFunction('submitForm', [$(this).parents('form').data('sheet-name'), getFormValues(formContainer)], function(content) {
-
-            $('form').find('input, select, textarea').val('');
-
-        });
+        setContent(data.template, data);
 
     });
 

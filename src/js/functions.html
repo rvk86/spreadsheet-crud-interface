@@ -6,32 +6,6 @@
 <? } ?>
 
 
-function showForm(sheetName, target, rowId) {
-
-    runFunction('findRow', [sheetName, rowId], function(list) {
-        var fields = [];
-        for (var i in list[0]) {
-
-            // Underscored columns hidden
-            var options = list[0][i][0] === '_' ?
-                          {'type': 'hidden'} :
-                          JSON.parse(list[1][i]);
-
-            options['id'] = options['id'] || list[0][i];
-            options['value'] = rowId ? list[2][i] : '';
-
-            fields.push(options);
-        };
-
-        setContent(target, 'part_form', {
-            'sheetName': sheetName,
-            'fields': fields
-        });
-    });
-
-}
-
-
 function getFormValues(container) {
 
     var values = [];
@@ -44,20 +18,9 @@ function getFormValues(container) {
 }
 
 
-function getSheetRowsObject(rows) {
-    rows = JSON.parse(rows);
+function setContent(template, atts, after) {
 
-    var rows = _.object(
-                        _.map(rows, function(row) { return row[2] + ' - ' + row[3]; }),
-                        _.map(rows, function(row) { return row[0]; }));
-
-    return rows;
-
-}
-
-
-function setContent(target, template, atts, after) {
-
+    var target = '#dynamic-content';
     $(target).empty();
     appendContent(target, template, atts, after);
 
@@ -71,6 +34,7 @@ function appendContent(target, template, atts, after) {
         $(target).append(content);
 
         $('select').select2();
+        $('table').DataTable();
         if(_.isFunction(after)) after.apply(this);
 
     });
