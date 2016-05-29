@@ -24,3 +24,33 @@ function getSpreadsheet() {
     return SpreadsheetApp.openById(params.spreadsheetId);
 
 }
+
+
+function getFunnels(sheetList) {
+
+    var sheetFunnels = {};
+    for(var s in sheets) {
+
+        var columnNames = getColumnNames(sheets[s]);
+        var funnels = _.filter(columnNames[0], function(n, i) { return _.isArray(columnNames[1][i]['options'])})
+
+        if(funnels.length > 0) {
+            sheetFunnels[sheets[s]] = funnels;
+        }
+
+    }
+
+    return sheetFunnels;
+
+}
+
+
+function copySpreadsheet() {
+
+    var ss = getSpreadsheet();
+    var date = moment().format('YYYY-MM-DD');
+    var copy = ss.copy('Copy of ' + ss.getName() + ' - ' + date);
+
+    return '<p>Copy successfully created. <a href="' + copy.getUrl() + '" target="_blank">' + copy.getName() + '</a></p>';
+
+}

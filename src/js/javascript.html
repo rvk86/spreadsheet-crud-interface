@@ -23,10 +23,10 @@ $(document).ready(function() {
         runFunction(data.action, [data], function(result) {
 
             if(data.modal) {
-                showModal('Action completed succesfully', data.modal || result || 'Great!');
+                showModal('Action completed succesfully', result || data.modal || 'Great!');
             };
 
-            if(data.target && data.template) {
+            if(data.template) {
                 setContent(data.template, data);
             }
 
@@ -48,13 +48,14 @@ $(document).ready(function() {
     });
 
 
+    // Support for multilevel dropdown
     $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function(event) {
 
 		event.preventDefault();
 		event.stopPropagation();
 		$(this).parent().siblings().removeClass('open');
 		$(this).parent().toggleClass('open');
-        
+
 	});
 
 });

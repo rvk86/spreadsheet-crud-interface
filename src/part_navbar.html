@@ -1,18 +1,7 @@
 <?
 
 var sheets = getSheetList();
-
-var sheetFunnels = {};
-for(var s in sheets) {
-    var columnNames = getColumnNames(sheets[s]);
-
-    var funnels = _.filter(columnNames[0], function(n, i) { return _.isArray(columnNames[1][i]['options'])})
-
-    if(funnels.length > 0) {
-        sheetFunnels[sheets[s]] = funnels;
-    }
-
-}
+var sheetFunnels = getFunnels(sheets);
 
 ?>
 
@@ -70,6 +59,19 @@ for(var s in sheets) {
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
+                    <ul id="sheets-dropdown" class="dropdown-menu">
+                            <li>
+                                <a class="trigger-action"
+                                   href="#"
+                                   data-action="copySpreadsheet"
+                                   data-modal="true">
+                                   Copy spreadsheet
+                                </a>
+                            </li>
+                    </ul>
+                </li>
                 <form class="navbar-form navbar-left" role="search">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Search">

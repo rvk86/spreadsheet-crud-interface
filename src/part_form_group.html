@@ -9,44 +9,33 @@ atts.value = atts.type === 'date' ?
 atts.type = atts.type || 'text';
 atts.disabled = atts.disabled || false;
 
-if(_.isArray(atts.options)) {
-
-    atts['options'] = _.object(atts.options, atts.options);
-
-} else if(_.isString(atts.options)) {
-
-    rows = JSON.parse(getAllRows(atts.options));
-
-    // Remove title columns from result
-    _.each(_.range(titleColumns), function() { rows.shift(); });
-
-    atts['options'] = _.object(
-                        _.map(rows, function(row) { return row[2] + ' - ' + row[3] + '(' + row[0] + ')'; }),
-                        _.map(rows, function(row) { return row[0]; }));
-
+if(atts.options) {
+    atts.options = createOptionsObject(atts.options);
 }
+
+var input_atts = 'id="' + atts.id + '" name="' + atts.id + '" class="form-control ' + atts.classes + '" ' + atts.disabled;
 
 ?>
 
-
-<div class="form-group">
-    <? if(atts.type !== 'hidden') { ?>
-        <label class="col-sm-4 control-label" for="<?= atts.id; ?>"><?= atts.label; ?></label>
-    <? } ?>
-    <div class="col-sm-4">
-        <? var input_atts = 'id="' + atts.id + '" name="' + atts.id + '" class="form-control ' + atts.classes + '" ' + atts.disabled; ?>
-        <? if (atts.type === 'select') { ?>
-            <select <?!= input_atts; ?>>
-                <option value="">Select an option</option>
-                <? for(var key in atts.options) { ?>
-                    <? var selected = atts.options[key] === atts.value ? 'selected' : ' '; ?>
-                    <option value="<?= atts.options[key]; ?>" <?!= selected; ?>><?= key; ?></option>
-                <? } ?>
-            </select>
-        <? } else if (atts.type === 'textarea') { ?>
-            <textarea <?!= input_atts; ?> rows="3" ><?= atts.value; ?></textarea>
-        <? } else { ?>
-            <input <?!= input_atts; ?> type="<?= atts.type; ?>" value="<?= atts.value; ?>">
-        <? } ?>
+<? if(atts.type !== 'hidden') { ?>
+    <div class="form-group">
+            <label class="col-sm-4 control-label" for="<?= atts.id; ?>"><?= atts.label; ?></label>
+        <div class="col-sm-4">
+            <? if (atts.type === 'select') { ?>
+                <select <?!= input_atts; ?>>
+                    <option value="">Select an option</option>
+                    <? for(var key in atts.options) { ?>
+                        <? var selected = atts.options[key] === atts.value ? 'selected' : ' '; ?>
+                        <option value="<?= atts.options[key]; ?>" <?!= selected; ?>><?= key; ?></option>
+                    <? } ?>
+                </select>
+            <? } else if (atts.type === 'textarea') { ?>
+                <textarea <?!= input_atts; ?> rows="3" ><?= atts.value; ?></textarea>
+            <? } else { ?>
+                <input <?!= input_atts; ?> type="<?= atts.type; ?>" value="<?= atts.value; ?>">
+            <? } ?>
+        </div>
     </div>
-</div>
+<? } else { ?>
+    <input <?!= input_atts; ?> type="<?= atts.type; ?>" value="<?= atts.value; ?>">
+<? } ?>

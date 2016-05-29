@@ -1,47 +1,51 @@
 <? var fields = getFormFields(atts.sheetName, atts.rowId); ?>
 
-<div class="btn-group col-sm-12" role="group">
-      <button class="trigger-action btn btn-warning"
-              href="#"
-              type="button"
-              data-action="deleteRow"
-              data-sheet-name="<?= atts.sheetName; ?>"
-              data-row-id="<?= atts.rowId; ?>"
-              data-template="part_table"
-              data-modal="Row succesfully deleted.">
-              <span aria-hidden="true">Delete row</span>
-      </button>
+<div class="row row-margin">
+    <div class="btn-group col-sm-12" role="group">
+          <button class="trigger-action btn btn-warning"
+                  href="#"
+                  type="button"
+                  data-action="deleteRow"
+                  data-sheet-name="<?= atts.sheetName; ?>"
+                  data-row-id="<?= atts.rowId; ?>"
+                  data-template="part_table"
+                  data-modal="Row succesfully deleted.">
+                  <span aria-hidden="true">Delete row</span>
+          </button>
+    </div>
 </div>
 
-<form class="form-horizontal col-sm-12" data-sheet-name="<?= atts.sheetName; ?>">
-    <div class="row">
-        <div class="col-sm-offset-4 col-sm-4">
-            <h3><?= atts.sheetName; ?></h3>
-        </div>
-    </div>
-    <div class="row">
-        <fieldset>
-            <? for(var i in fields) { ?>
-
-                <?!= templatePart('part_form_group', fields[i]); ?>
-
-            <? } ?>
-            <div class="form-group">
-                <label class="col-sm-4 control-label"></label>
-                    <div class="col-sm-4">
-                        <button class="trigger-action btn btn-primary"
-                                href="#"
-                                type="button"
-                                data-action="submitForm"
-                                data-sheet-name="<?= atts.sheetName; ?>"
-                                data-form-values="#dynamic-content"
-                                data-row-id="<?= atts.rowId; ?>"
-                                data-template="part_table"
-                                data-modal="Row succesfully added.">
-                                <span aria-hidden="true">Add row</span>
-                        </button>
-                </div>
+<div class="row row-margin">
+    <form class="form-horizontal col-sm-12" data-sheet-name="<?= atts.sheetName; ?>">
+        <div class="row">
+            <div class="col-sm-offset-4 col-sm-4">
+                <h3><?= atts.sheetName; ?></h3>
             </div>
-        </fieldset>
-    </div>
-</form>
+        </div>
+        <div class="row">
+            <fieldset>
+                <? for(var i in fields) { ?>
+
+                    <?!= templatePart('part_form_group', fields[i]); ?>
+
+                <? } ?>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label"></label>
+                        <div class="col-sm-4">
+                            <button class="trigger-action btn btn-primary"
+                                    href="#"
+                                    type="button"
+                                    data-action="submitForm"
+                                    data-sheet-name="<?= atts.sheetName; ?>"
+                                    data-form-values="#dynamic-content"
+                                    data-row-id="<?= atts.rowId; ?>"
+                                    data-template="part_table"
+                                    data-modal="Row succesfully added.">
+                                    <span aria-hidden="true">Add row</span>
+                            </button>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </form>
+</div>

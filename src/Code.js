@@ -2,6 +2,7 @@ var _ = Underscore.load();
 var moment = Moment.load();
 
 var titleColumns = 2;
+var auditRows = 2;
 
 /**
 * Renders html output

@@ -55,3 +55,8 @@ function _getFullDataRange(s, columns) {
     return s.getRange(1, 1, s.getLastRow(), columns);
 
 }
+
+
+function getDataOnly(rows) {
+    return _.each(_.range(titleColumns), function() { rows.shift(); });
+}

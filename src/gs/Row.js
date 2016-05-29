@@ -2,9 +2,9 @@ function submitForm(atts) {
 
     var s = getSpreadsheet().getSheetByName(atts.sheetName);
 
-    // If _id column does not exist, create and populate audit columns
     var columns = getColumnNames(atts.sheetName);
 
+    // If _id column does not exist, create and populate audit columns
     if(columns[0][0] !== '_id') {
         setAuditColumns(s);
         atts.formValues.unshift('', '');
@@ -87,5 +87,37 @@ function updateRow(s, values) {
 
     var position = getRowPosition(s, values[0]);
     s.getRange(position, 1, 1, s.getLastColumn()).setValues([values]);
+
+}
+
+
+function getTitle(row) {
+
+    return row[auditRows] + ' - ' + row[auditRows + 1] + '(' + row[0] + ')';
+
+}
+
+
+function createOptionsObject(options) {
+    if(_.isArray(options)) {
+
+        return _.object(options, options);
+
+    } else if(_.isString(options)) {
+
+        rows = JSON.parse(getAllRows(options));
+
+        // Remove title columns from result
+        _.each(_.range(titleColumns), function() { rows.shift(); });
+
+        return = _.object(
+                            _.map(rows, function(row) { getTitle(row); }),
+                            _.map(rows, function(row) { return row[0]; }));
+
+    } else {
+
+        return options;
+
+    }
 
 }

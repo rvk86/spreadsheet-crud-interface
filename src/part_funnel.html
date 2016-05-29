@@ -6,16 +6,14 @@ var columnNames = rows[0];
 var columnOptions = _.object(rows[0], rows[1]);
 var options = JSON.parse(columnOptions[atts.funnelField])['options'];
 
-_.each(_.range(titleColumns), function() { rows.shift(); });
+rows = getDataOnly(rows);
 
 var columnIndex = columnNames.indexOf(atts.funnelField);
 var groups = _.groupBy(rows, function(row){ return row[columnIndex]; });
 
 ?>
 
-<?!= templatePart('funnel'); ?>
-
-<div class="row">
+<div class="row row-margin">
     <div class="table-responsive col-sm-12">
         <table class="table table-bordered" cellspacing="0" width="100%" data-column-index="<?= columnIndex; ?>">
 
@@ -42,7 +40,7 @@ var groups = _.groupBy(rows, function(row){ return row[columnIndex]; });
                                     data-sheet-name="<?= atts.sheetName; ?>"
                                     data-row-id="<?= groups[options[j]][k][0]; ?>"
                                     data-template="part_form">
-                                     <?= groups[options[j]][k][2]; ?> - <?= groups[options[j]][k][3]; ?> (<?= groups[options[j]][k][0]; ?>)
+                                     <?= getTitle(groups[options[j]][k]); ?>
                                  </a>
                                 </div>
 
