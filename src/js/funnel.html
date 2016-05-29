@@ -1,0 +1,31 @@
+<script>
+
+$(document).ready(function() {
+
+    $('.funnel-stage').each(function() {
+
+        var sortable = Sortable.create(this, {
+            group: 'funnel-stage',
+            onAdd: function (evt) {
+
+                sortable.option("disabled", true);
+
+                var data = $(evt.item).data();
+                var columnIndex = $(evt.item).parents('table').data('columnIndex');
+                var val = $(evt.item).parents('.funnel-stage').data('value');
+
+                runFunction('updateCell', [data.sheetName, data.rowId, columnIndex, val], function(result) {
+
+                    sortable.option("disabled", false);
+
+                });
+
+            }
+
+        });
+
+    });
+
+});
+
+</script>

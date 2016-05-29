@@ -3,7 +3,7 @@ function submitForm(atts) {
     var s = getSpreadsheet().getSheetByName(atts.sheetName);
 
     // If _id column does not exist, create and populate audit columns
-    var columns = getColumnNames(s);
+    var columns = getColumnNames(atts.sheetName);
 
     if(columns[0][0] !== '_id') {
         setAuditColumns(s);
@@ -66,6 +66,22 @@ function setAuditColumns(s) {
     s.hideColumns(1, 2);
 
 }
+
+
+function updateCell(sheetName, rowId, cellIndex, value) {
+
+    var s = getSpreadsheet().getSheetByName(sheetName);
+
+    var position = getRowPosition(s, rowId);
+    var range = s.getRange(position, 1, 1, s.getLastColumn());
+
+    var values = range.getValues()[0];
+    values[cellIndex] = value;
+
+    range.setValues([values]);
+
+}
+
 
 function updateRow(s, values) {
 

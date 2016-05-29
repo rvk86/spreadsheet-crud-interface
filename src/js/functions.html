@@ -34,7 +34,7 @@ function appendContent(target, template, atts, after) {
         $(target).append(content);
 
         $('select').select2();
-        $('table').DataTable();
+        $('.data-table').DataTable();
         if(_.isFunction(after)) after.apply(this);
 
     });

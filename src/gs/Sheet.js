@@ -1,4 +1,6 @@
-function getColumnNames(s) {
+function getColumnNames(sheetName) {
+
+    var s = getSpreadsheet().getSheetByName(sheetName);
 
     var columnNames = s.getRange(1, 1, titleColumns, s.getLastColumn()).getValues();
     columnNames[1] = _.map(columnNames[1], function(cell) { return JSON.parse(cell); })
@@ -24,7 +26,7 @@ function getFormFields(sheetName, rowId) {
 
     var s = getSpreadsheet().getSheetByName(sheetName);
 
-    var columnNames = getColumnNames(s);
+    var columnNames = getColumnNames(sheetName);
     var rowPosition = rowId ? getRowPosition(s, rowId) : -1;
     var row = rowPosition > -1 ? s.getRange(rowPosition, 1, 1, s.getLastColumn()).getValues()[0] : false;
 

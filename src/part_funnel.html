@@ -1,0 +1,57 @@
+<?
+
+var rows = JSON.parse(getAllRows(atts.sheetName));
+
+var columnNames = rows[0];
+var columnOptions = _.object(rows[0], rows[1]);
+var options = JSON.parse(columnOptions[atts.funnelField])['options'];
+
+_.each(_.range(titleColumns), function() { rows.shift(); });
+
+var columnIndex = columnNames.indexOf(atts.funnelField);
+var groups = _.groupBy(rows, function(row){ return row[columnIndex]; });
+
+?>
+
+<?!= templatePart('funnel'); ?>
+
+<div class="row">
+    <div class="table-responsive col-sm-12">
+        <table class="table table-bordered" cellspacing="0" width="100%" data-column-index="<?= columnIndex; ?>">
+
+            <thead>
+                <tr>
+                    <? for(var i in options) { ?>
+                        <th><?= options[i]; ?></th>
+                    <? } ?>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <? for(var j in options) { ?>
+
+                        <td class="funnel-stage" data-value="<?= options[j]; ?>">
+                            <? for(var k in groups[options[j]]) { ?>
+
+                                <div class="funnel-item"
+                                     data-sheet-name="<?= atts.sheetName; ?>"
+                                     data-row-id="<?= groups[options[j]][k][0]; ?>">
+
+                                 <a class="set-content"
+                                    href="#"
+                                    data-sheet-name="<?= atts.sheetName; ?>"
+                                    data-row-id="<?= groups[options[j]][k][0]; ?>"
+                                    data-template="part_form">
+                                     <?= groups[options[j]][k][2]; ?> - <?= groups[options[j]][k][3]; ?> (<?= groups[options[j]][k][0]; ?>)
+                                 </a>
+                                </div>
+
+                            <? } ?>
+                        </td>
+
+                    <? } ?>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

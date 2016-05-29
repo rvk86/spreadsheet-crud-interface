@@ -1,3 +1,21 @@
+<?
+
+var sheets = getSheetList();
+
+var sheetFunnels = {};
+for(var s in sheets) {
+    var columnNames = getColumnNames(sheets[s]);
+
+    var funnels = _.filter(columnNames[0], function(n, i) { return _.isArray(columnNames[1][i]['options'])})
+
+    if(funnels.length > 0) {
+        sheetFunnels[sheets[s]] = funnels;
+    }
+
+}
+
+?>
+
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -11,26 +29,45 @@
             <a class="navbar-brand" href="#">Polymath Ventures</a>
         </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
         <div id="main-navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sheets <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Data <span class="caret"></span></a>
                     <ul id="sheets-dropdown" class="dropdown-menu">
-                        <? var sheets = getSheetList(); ?>
                         <? for(var i in sheets) { ?>
-                                <li>
-                                    <a class="set-content"
-                                       href="#"
-                                       data-sheet-name="<?= sheets[i]; ?>"
-                                       data-template="part_table">
-                                        <?= sheets[i]; ?>
-                                    </a>
-                                </li>
-                            <li role="separator" class="divider"></li>
+                            <li>
+                                <a class="set-content"
+                                   href="#"
+                                   data-sheet-name="<?= sheets[i]; ?>"
+                                   data-template="part_table">
+                                    <?= sheets[i]; ?>
+                                </a>
+                            </li>
                         <? } ?>
                     </ul>
                 </li>
+
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Funnels <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <? for(var key in sheetFunnels) { ?>
+                            <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><?= key; ?></a>
+    							<ul class="dropdown-menu">
+                                    <? for(var j in sheetFunnels[key]) { ?>
+        								<li>
+                                            <a class="set-content"
+                                               href="#"
+                                               data-sheet-name="<?= key; ?>"
+                                               data-template="part_funnel"
+                                               data-funnel-field="<?= sheetFunnels[key][j]; ?>">
+                                                <?= sheetFunnels[key][j]; ?>
+                                            </a></li>
+                                    <? } ?>
+    							</ul>
+    						</li>
+                        <? } ?>
+                    </ul>
+                </li>
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <form class="navbar-form navbar-left" role="search">
