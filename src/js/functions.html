@@ -42,7 +42,7 @@ function setContent(template, atts, after) {
         $(target).empty();
         $(target).append(content);
 
-        $('select').select2({'theme': 'bootstrap'});
+        $('.select2').select2({'theme': 'bootstrap'});
         $('.data-table').DataTable();
         if(_.isFunction(after)) after.apply(this);
         $('.progress').hide();

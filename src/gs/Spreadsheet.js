@@ -18,7 +18,7 @@ function getSpreadsheet() {
                                      'Please add this to the end of the current URL: ?spreadsheetId=???,' +
                                      'replacing ??? by an ID of a spreadsheet that you have access to.';
 
-    return SpreadsheetApp.openById(params.spreadsheetId);
+    return SpreadsheetApp.openById(queryParams.spreadsheetId);
 
 }
 
@@ -55,8 +55,8 @@ function copySpreadsheet() {
 
 function getTriggers() {
 
-    var triggers = userProperties.getProperty(queryParams.spreadsheetId);
-    triggers = _.isArray(triggers) ? JSON.parse(triggers) : [];
+    var triggers = JSON.parse(userProperties.getProperty(queryParams.spreadsheetId));
+    triggers = _.isArray(triggers) ? triggers : [];
 
     return triggers;
 
@@ -67,7 +67,7 @@ function deleteTrigger(atts) {
 
     var triggers = _.filter(getTriggers(), function(val, i) { return i !== atts.triggerIndex; });
 
-    userProperties.setProperty(userProperties.getProperty(queryParams.spreadsheetId);, JSON.stringify(triggers));
+    userProperties.setProperty(queryParams.spreadsheetId, JSON.stringify(triggers));
 
 }
 
@@ -82,7 +82,7 @@ function saveTrigger(atts) {
         triggers.push(atts.formValues);
     }
 
-    userProperties.setProperty(userProperties.getProperty(queryParams.spreadsheetId), JSON.stringify(triggers));
+    userProperties.setProperty(queryParams.spreadsheetId, JSON.stringify(triggers));
 
 }
 
