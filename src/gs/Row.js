@@ -4,14 +4,13 @@ function submitForm(atts) {
 
     var columns = getColumnNames(atts.sheetName);
 
-    var isNew = atts.formValues[0] === '';
-
     // If _id column does not exist, create and populate audit columns
     if(columns[0][0] !== '_id') {
         setAuditColumns(s);
         atts.formValues.unshift('', '');
     }
 
+    var isNew = atts.formValues[0] === '';
     atts.formValues[1] = Session.getActiveUser().getEmail();
 
     if(isNew) {
