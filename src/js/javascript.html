@@ -7,17 +7,19 @@ $(document).ready(function() {
         var <?!= key; ?> = <?= atts[key]; ?>;
     <? } ?>
 
-    $('body').on('click', '.trigger-action', function(e) {
+    $('body').on('click change', '.trigger-action', function(e) {
 
         // make sure event is not fired multiple times
         if(e.handled === true) return;
         e.handled = true;
 
+        $('.progress').show();
+
         var data = $(this).data();
 
         // A form-values data attribute will get the values of all fields in the specified container container
         if(data.formValues) {
-            data.formValues = getFormValues(data.formValues)
+            data.formValues = getFormValues(data.formValues);
         }
 
         runFunction(data.action, [data], function(result) {
@@ -27,7 +29,9 @@ $(document).ready(function() {
             };
 
             if(data.template) {
-                setContent(data.template, data);
+                setContent(data.template, data, function() {
+                    $('.progress').hide();
+                });
             }
 
         });
@@ -35,15 +39,26 @@ $(document).ready(function() {
     });
 
 
-    $('body').on('click', '.set-content', function(e) {
+    $('body').on('click change', '.set-content', function(e) {
 
         // make sure event is not fired multiple times
         if(e.handled === true) return;
         e.handled = true;
 
+        $('.progress').show();
+
         var data = $(this).data();
 
-        setContent(data.template, data);
+        if(e.type === 'change') {
+            data[data['value']] = $(this).val();
+
+            // select2 appends an attribute to the data which can't be handled by the template. Here I'm overriding it.
+            data.select2 = '';
+        }
+
+        setContent(data.template, data, function() {
+            $('.progress').hide();
+        });
 
     });
 

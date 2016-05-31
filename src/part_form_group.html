@@ -7,19 +7,28 @@ atts.value = atts.type === 'date' ?
                             moment(atts.value).format('YYYY-MM-DD') :
                             atts.value;
 atts.type = atts.type || 'text';
-atts.disabled = atts.disabled || false;
+atts.disabled = atts.disabled ? 'disabled' : '';
+atts.required = atts.required ? 'required' : '';
 
 if(atts.options) {
     atts.options = createOptionsObject(atts.options);
 }
 
-var input_atts = 'id="' + atts.id + '" name="' + atts.id + '" class="form-control ' + atts.classes + '" ' + atts.disabled;
+var input_atts = 'id="' + atts.id + '" name="' + atts.id + '" class="form-control ' + atts.classes + '" ' + atts.disabled + ' ' + atts.required;
+
+for(var key in atts.dataAttributes) {
+    input_atts += ' ' + key + '="' + atts.dataAttributes[key] + '"';
+}
 
 ?>
 
 <? if(atts.type !== 'hidden') { ?>
     <div class="form-group">
+
+        <? if(atts.label !== '') { ?>
             <label class="col-sm-4 control-label" for="<?= atts.id; ?>"><?= atts.label; ?></label>
+        <? } ?>
+
         <div class="col-sm-4">
             <? if (atts.type === 'select') { ?>
                 <select <?!= input_atts; ?>>

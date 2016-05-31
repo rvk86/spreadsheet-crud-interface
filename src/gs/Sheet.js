@@ -3,7 +3,20 @@ function getColumnNames(sheetName) {
     var s = getSpreadsheet().getSheetByName(sheetName);
 
     var columnNames = s.getRange(1, 1, titleColumns, s.getLastColumn()).getValues();
-    columnNames[1] = _.map(columnNames[1], function(cell) { return JSON.parse(cell); })
+    columnNames[1] = _.map(columnNames[1], function(cell) {
+
+        try {
+            return JSON.parse(cell);
+        } catch(err) {
+            throw 'It seems like you have some badly formatted JSON in your sheet.' +
+                  'These are some examples of well formatted settings:' +
+                  '{"type": "text", "label": "First Name"}, ' +
+                  '\n{"type": "select", "options": ["Option 1", "Option 2", "Option 3"]}. ' +
+                  'Please review all your columns and refreh this page.';
+        }
+
+
+    })
 
     return columnNames;
 
@@ -37,7 +50,7 @@ function getFormFields(sheetName, rowId) {
 
         var options = columnNames[1][i];
         options['id'] = options['id'] || columnNames[0][i];
-        options['value'] = row ? row[i] : '';
+        options['value'] = row ? row[i] : options['value'] ? options['value'] : '';
 
         fields.push(options);
 
@@ -48,15 +61,32 @@ function getFormFields(sheetName, rowId) {
 }
 
 
-function _getFullDataRange(s, columns) {
+function _getFullDataRange(s, fromCol, numCols) {
 
-    var columns = columns || s.getLastColumn();
+    var fromCol = fromCol || 1;
+    var numCols = numCols || s.getLastColumn();
 
-    return s.getRange(1, 1, s.getLastRow(), columns);
+    return s.getRange(1, fromCol, s.getLastRow(), numCols);
 
 }
 
 
 function getDataOnly(rows) {
-    return _.each(_.range(titleColumns), function() { rows.shift(); });
+
+    var data = rows.slice(titleColumns);
+
+    return data;
+
+}
+
+
+function getUsers(sheetName) {
+
+    var s = getSpreadsheet().getSheetByName(sheetName);
+
+    var userList = _getFullDataRange(s, 2, 1).getValues();
+    userList = _.flatten(userList);
+
+    return getDataOnly(userList);
+
 }

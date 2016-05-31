@@ -8,48 +8,75 @@ var options = JSON.parse(columnOptions[atts.funnelField])['options'];
 
 rows = getDataOnly(rows);
 
+if(atts.user) {
+    rows = _.filter(rows, function(row) { return row[createdBy] === atts.user});
+}
+
 var columnIndex = columnNames.indexOf(atts.funnelField);
 var groups = _.groupBy(rows, function(row){ return row[columnIndex]; });
+
+var users = getUsers(atts.sheetName);
 
 ?>
 
 <div class="row row-margin">
-    <div class="table-responsive col-sm-12">
-        <table class="table table-bordered" cellspacing="0" width="100%" data-column-index="<?= columnIndex; ?>">
+    <?!= templatePart('part_form_group', {'type': 'select',
+                                          'options': users,
+                                          'classes': 'set-content',
+                                          'value': atts.user,
+                                          'dataAttributes': {'data-sheet-name': atts.sheetName,
+                                                             'data-funnel-field': atts.funnelField,
+                                                             'data-template': 'part_funnel',
+                                                             'data-value': 'user'}}); ?>
+</div>
 
-            <thead>
-                <tr>
-                    <? for(var i in options) { ?>
-                        <th><?= options[i]; ?></th>
-                    <? } ?>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <? for(var j in options) { ?>
+<div class="row row-margin">
+    <div class="col-sm-12">
+        <div class="table-responsive">
+            <table class="table table-bordered" cellspacing="0" width="100%" data-column-index="<?= columnIndex; ?>">
 
-                        <td class="funnel-stage" data-value="<?= options[j]; ?>">
-                            <? for(var k in groups[options[j]]) { ?>
-
-                                <div class="funnel-item"
-                                     data-sheet-name="<?= atts.sheetName; ?>"
-                                     data-row-id="<?= groups[options[j]][k][0]; ?>">
-
-                                 <a class="set-content"
-                                    href="#"
-                                    data-sheet-name="<?= atts.sheetName; ?>"
-                                    data-row-id="<?= groups[options[j]][k][0]; ?>"
-                                    data-template="part_form">
-                                     <?= getTitle(groups[options[j]][k]); ?>
-                                 </a>
-                                </div>
-
-                            <? } ?>
+                <thead>
+                    <tr>
+                        <? for(var i = 0; i < options.length - 1; i++) { ?>
+                            <th><?= options[i]; ?></th>
+                        <? } ?>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="funnel-stage last-stage text-center bg-danger" style="display: none;" data-value="<?= options[options.length - 1]; ?>">
+                        <td colspan="<?=options.length; ?>">
+                            <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
                         </td>
+                    </tr>
+                    <tr>
+                        <? for(var j = 0; j < options.length - 1; j++) { ?>
 
-                    <? } ?>
-                </tr>
-            </tbody>
-        </table>
+                            <td class="funnel-stage" data-value="<?= options[j]; ?>">
+                                <? for(var k in groups[options[j]]) { ?>
+
+                                    <div class="funnel-item"
+                                         data-sheet-name="<?= atts.sheetName; ?>"
+                                         data-row-id="<?= groups[options[j]][k][0]; ?>">
+
+                                     <a class="set-content"
+                                        href="#"
+                                        data-sheet-name="<?= atts.sheetName; ?>"
+                                        data-row-id="<?= groups[options[j]][k][0]; ?>"
+                                        data-template="part_form">
+                                         <?= getTitle(groups[options[j]][k]); ?>
+                                     </a><br />
+                                     <span class="small"><?= groups[options[j]][k][1]; ?></span>
+                                    </div>
+
+                                <? } ?>
+                            </td>
+
+                        <? } ?>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+
+<?!= templatePart('funnel'); ?>

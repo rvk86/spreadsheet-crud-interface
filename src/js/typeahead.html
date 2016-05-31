@@ -1,0 +1,39 @@
+<script>
+$(document).ready(function() {
+
+    $('.typeahead').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 3
+        },
+        {
+            source: function (query, sync, async) {
+
+                return runFunction('getAllDataList', [query], function(data) {
+                    window.typeaheadResults = data;
+                    return async(_.keys(data));
+                });
+
+           }
+        });
+
+    $('.typeahead').bind('typeahead:asyncrequest', function() {
+        $('.progress').show();
+    });
+
+    $('.typeahead').bind('typeahead:render', function() {
+        $('.progress').hide();
+    });
+
+    $('.typeahead').bind('typeahead:select', function(ev, sug) {
+
+        $('.progress').show();
+
+        var result = window.typeaheadResults[sug].split(':');
+        setContent('part_form', {'sheetName': result[0], 'rowId': result[1]}, function() {
+            $('.typeahead').typeahead('val', '');
+            $('.progress').hide();
+        });
+    });
+});
+</script>

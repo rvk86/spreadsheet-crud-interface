@@ -1,8 +1,10 @@
 var _ = Underscore.load();
 var moment = Moment.load();
+var userProperties = PropertiesService.getUserProperties();
 
 var titleColumns = 2;
 var auditRows = 2;
+var createdBy = 1;
 
 /**
 * Renders html output
@@ -16,6 +18,8 @@ function doGet(e) {
 
     var scriptProperties = PropertiesService.getScriptProperties();
     scriptProperties.setProperty('params', JSON.stringify(e.parameters));
+
+    userProperties.deleteProperty('index');
 
     return t.evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME);
 

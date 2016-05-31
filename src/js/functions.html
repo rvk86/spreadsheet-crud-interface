@@ -10,7 +10,16 @@ function getFormValues(container) {
 
     var values = [];
     $(container).find('input, select, textarea').each(function() {
-        values.push($(this).val());
+
+        var val = $(this).val();
+        if($(this).attr('required') && val === '') {
+            var message = 'Not all required fields are filled. Please check your input and try again.';
+            showModal('Oops!', message);
+            throw message;
+        }
+
+        values.push(val);
+
     });
 
     return values;
@@ -33,7 +42,7 @@ function appendContent(target, template, atts, after) {
 
         $(target).append(content);
 
-        $('select').select2();
+        $('select').select2({'theme': 'bootstrap'});
         $('.data-table').DataTable();
         if(_.isFunction(after)) after.apply(this);
 
@@ -44,21 +53,12 @@ function appendContent(target, template, atts, after) {
 
 function runFunction(func, args, success) {
 
-    toggleProgress();
-
     return google.script.run
-    .withSuccessHandler(wrap(success, false, toggleProgress))
-    .withFailureHandler(wrap(function(error) {
+    .withSuccessHandler(success)
+    .withFailureHandler(function(error) {
         var title = 'Something went terribly wrong...';
         showModal(title, error.message);
-    }, false, toggleProgress))[func].apply(this, args);
-
-}
-
-
-function toggleProgress() {
-
-    $('.progress').toggle();
+    })[func].apply(this, args);
 
 }
 
@@ -68,18 +68,6 @@ function showModal(title, message) {
     $('.modal-title').html(title);
     $('.modal-body').html(message);
     $('.modal').modal();
-
-};
-
-
-function wrap(fn, before, after) {
-
-    return function () {
-        if(_.isFunction(before)) before.apply(this, arguments);
-        var result = fn.apply(this, arguments);
-        if(_.isFunction(after)) after.call(this, result);
-        return result;
-    };
 
 };
 

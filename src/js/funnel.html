@@ -6,8 +6,15 @@ $(document).ready(function() {
 
         var sortable = Sortable.create(this, {
             group: 'funnel-stage',
+            onStart: function (evt) {
+                $('.last-stage').show();
+            },
+            onEnd: function (evt) {
+                $('.last-stage').hide();
+            },
             onAdd: function (evt) {
 
+                $('.progress').show();
                 sortable.option("disabled", true);
 
                 var data = $(evt.item).data();
@@ -17,6 +24,7 @@ $(document).ready(function() {
                 runFunction('updateCell', [data.sheetName, data.rowId, columnIndex, val], function(result) {
 
                     sortable.option("disabled", false);
+                    $('.progress').hide();
 
                 });
 
