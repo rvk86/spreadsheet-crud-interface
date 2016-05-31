@@ -9,13 +9,14 @@ Check it out here: https://script.google.com/macros/s/AKfycbyxwOdf4-TqNH86tKhA8Q
  * Add data types to form input for columns
  * Save date created, date updated and user who made the change
  * Have relationships between sheets (available as dropdowns in the input forms)
- * For select columns show drag & drop funnel
+ * For 'select' columns show drag & drop funnel
+ * Create triggers to send emails on add or update of rows
  * Copy spreadsheet for further data analysis
 
 ## Usage
 
  * When accessing the app, add a query parameter to the url "?spreadsheetId=???", replacing ??? by your spreadsheet ID.
- * Each sheet represents a model (person, organization, deal). Names should not contain spaces & should be singular.
+ * Each sheet represents a data type (person, organization, deal). Names should not contain spaces & should be singular. Column names should be unique.
  * Each column represents a data field. Put the field names on the first row of the sheet. Names without spaces.
  * On the second row of each sheet a JSON string should be defined with the characteristics of the field.
 
@@ -25,6 +26,7 @@ Check it out here: https://script.google.com/macros/s/AKfycbyxwOdf4-TqNH86tKhA8Q
     "type": "text",
     "value": undefined,
     "label": undefined,
+    "help": undefined,
     "options": undefined,
     "required": false,
     "disabled": false
@@ -53,7 +55,7 @@ If "options" is defined as an array, automatically a funnel view becomes availab
 
 ```js
 
-{"type": "select", "label": "status", "options": ["Pending", "Active", "Canceled"}
+{"type": "select", "label": "status", "options": ["Pending", "Active", "Canceled"]}
 
 ```
 
@@ -67,8 +69,10 @@ If you set it to a string, it should reference another sheet in the same spreads
 
 ## Side notes
 
- * In both the options dropdown referencing another sheet and the funnel view, the first two columns of the sheet are shown. So make sure those two columns are unique enough to determine which row it is.
+ * In both the options drop down referencing another sheet, the funnel view and the search box, the first two columns of the sheet are shown. So make sure those two columns are unique enough to determine which row it is.
+ * The main advantage of using this tool is that you think more explicitly about the data structure of your process.
 
 ## Known limitations
 
  * Makes use of html5 field types, so only works in modern browsers. (Chrome preferred)
+ * With a lot of rows, the tool can become slow. A solution could be to archive the file (make a copy through the interface) and delete rows from the original file.
