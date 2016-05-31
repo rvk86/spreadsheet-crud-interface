@@ -12,6 +12,11 @@ atts.disabled = atts.disabled ? 'disabled' : '';
 atts.required = atts.required ? 'required' : '';
 
 if(atts.options) {
+
+    if(_.isString(atts.options)) {
+        atts.classes += ' select2';
+    }
+
     atts.options = createOptionsObject(atts.options);
 }
 
