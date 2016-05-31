@@ -34,6 +34,37 @@ function getAllRows(sheetName) {
 
 }
 
+// Generating the html on the backend is a looot faster than doing the loop in the template itself.
+function getHtmlRows(sheetName) {
+
+    var rows = getDataOnly(JSON.parse(getAllRows(sheetName)));
+
+    var htmlRows = '';
+
+    for(var i in rows) {
+
+        var htmlRow = '<tr>';
+        for(var c = auditRows; c < rows[i].length; c++) {
+            htmlRow +=  '<td>' +
+                            '<a class="trigger-action"' +
+                               'href="#"' +
+                               'data-sheet-name="' + sheetName + '"' +
+                               'data-row-id="' + rows[i][0] + '"' +
+                               'data-template="part_form">' +
+                               rows[i][c] +
+                            '</a>' +
+                        '</td>';
+        }
+
+        htmlRow += '</tr>';
+
+        htmlRows += htmlRow;
+    }
+
+    return htmlRows;
+
+}
+
 
 function getFormFields(sheetName, rowId) {
 

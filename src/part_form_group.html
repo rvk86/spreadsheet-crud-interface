@@ -17,7 +17,7 @@ if(atts.options) {
         atts.classes += ' select2';
     }
 
-    atts.options = createOptionsObject(atts.options);
+    atts.options = createOptionsObject(atts.options, atts.value);
 }
 
 var input_atts = 'id="' + atts.id + '" name="' + atts.id + '" class="form-control ' + atts.classes + '" ' + atts.disabled + ' ' + atts.required;
@@ -39,10 +39,7 @@ for(var key in atts.dataAttributes) {
             <? if (atts.type === 'select') { ?>
                 <select <?!= input_atts; ?>>
                     <option value="">Select an option</option>
-                    <? for(var key in atts.options) { ?>
-                        <? var selected = atts.options[key] === atts.value ? 'selected' : ' '; ?>
-                        <option value="<?= atts.options[key]; ?>" <?!= selected; ?>><?= key; ?></option>
-                    <? } ?>
+                    <?!= atts.options; ?>
                 </select>
             <? } else if (atts.type === 'textarea') { ?>
                 <textarea <?!= input_atts; ?> rows="3" ><?= atts.value; ?></textarea>

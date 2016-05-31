@@ -106,26 +106,35 @@ function getTitle(row) {
 
 }
 
-
-function createOptionsObject(options) {
+// Generating the html on the backend is a looot faster than doing the loop in the template itself.
+function createOptionsObject(options, value) {
 
     if(_.isArray(options)) {
 
-        return _.object(options, options);
+        var options =  _.object(options, options);
 
     } else if(_.isString(options)) {
 
         var rows = JSON.parse(getAllRows(options));
         rows = getDataOnly(rows);
 
-        return _.object(
-                    _.map(rows, function(row) { return getTitle(row); }),
-                    _.map(rows, function(row) { return row[0]; }));
+        var options =   _.object(
+                        _.map(rows, function(row) { return getTitle(row); }),
+                        _.map(rows, function(row) { return row[0]; }));
 
     } else {
 
-        return options;
+        var options = options;
 
     }
+
+
+    var htmlOptions = '';
+    for(var key in options) {
+        var selected = options[key] === value ? 'selected' : '';
+        htmlOptions += '<option value="' + options[key] + '"' + selected + '>' + key + '</option>';
+    }
+
+    return htmlOptions;
 
 }

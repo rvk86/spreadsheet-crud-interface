@@ -1,9 +1,7 @@
 <?
 
-var rows = JSON.parse(getAllRows(atts.sheetName));
-
-var columnNames = rows[0];
-rows = getDataOnly(rows);
+var rows = getHtmlRows(atts.sheetName);
+var columnNames = getColumnNames(atts.sheetName)[0];
 
 ?>
 
@@ -31,24 +29,7 @@ rows = getDataOnly(rows);
                 </thead>
 
                 <tbody>
-                    <? for(var r in rows) { ?>
-                        <tr>
-                            <? for(var c = auditRows; c < rows[r].length; c++) { ?>
-
-                                <td>
-                                    <a class="trigger-action"
-                                       href="#"
-                                       data-sheet-name="<?= atts.sheetName; ?>"
-                                       data-row-id="<?= rows[r][0]; ?>"
-                                       data-template="part_form">
-                                        <?= rows[r][c]; ?>
-                                    </a>
-                                </td>
-
-                            <? } ?>
-
-                        </tr>
-                    <? } ?>
+                    <?!= rows; ?>
                 </tbody>
             </table>
         </div>

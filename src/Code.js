@@ -19,7 +19,10 @@ function doGet(e) {
 
     userProperties.setProperty('params', JSON.stringify(e.parameters));
 
-    return t.evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME);
+    return t.evaluate()
+            .setTitle('Spreadsheet CRUD interface')
+            .setFaviconUrl('http://www.polymathv.com/new/wp-content/uploads/2016/05/12771386-e1464724136365.png')
+            .setSandboxMode(HtmlService.SandboxMode.IFRAME);
 
 };
 
