@@ -9,9 +9,8 @@ rows = getDataOnly(rows);
 
 <div class="row row-margin">
     <div class="btn-group col-sm-12" role="group">
-        <button class="set-content btn btn-primary"
+        <button class="trigger-action btn btn-primary"
                 href="#"
-                data-action="deleteRow"
                 data-sheet-name="<?= atts.sheetName; ?>"
                 data-template="part_form">
             Add new <?= atts.sheetName; ?>
@@ -37,7 +36,7 @@ rows = getDataOnly(rows);
                             <? for(var c = auditRows; c < rows[r].length; c++) { ?>
 
                                 <td>
-                                    <a class="set-content"
+                                    <a class="trigger-action"
                                        href="#"
                                        data-sheet-name="<?= atts.sheetName; ?>"
                                        data-row-id="<?= rows[r][0]; ?>"

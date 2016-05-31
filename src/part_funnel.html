@@ -22,7 +22,7 @@ var users = getUsers(atts.sheetName);
 <div class="row row-margin">
     <?!= templatePart('part_form_group', {'type': 'select',
                                           'options': users,
-                                          'classes': 'set-content',
+                                          'classes': 'trigger-action',
                                           'value': atts.user,
                                           'dataAttributes': {'data-sheet-name': atts.sheetName,
                                                              'data-funnel-field': atts.funnelField,
@@ -54,11 +54,11 @@ var users = getUsers(atts.sheetName);
                             <td class="funnel-stage" data-value="<?= options[j]; ?>">
                                 <? for(var k in groups[options[j]]) { ?>
 
-                                    <div class="funnel-item"
+                                    <div class="funnel-item btn btn-primary"
                                          data-sheet-name="<?= atts.sheetName; ?>"
                                          data-row-id="<?= groups[options[j]][k][0]; ?>">
 
-                                     <a class="set-content"
+                                     <a class="trigger-action"
                                         href="#"
                                         data-sheet-name="<?= atts.sheetName; ?>"
                                         data-row-id="<?= groups[options[j]][k][0]; ?>"

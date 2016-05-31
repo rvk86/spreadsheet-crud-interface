@@ -16,10 +16,7 @@ function doGet(e) {
     var t = HtmlService.createTemplateFromFile('index');
     t.params = e.parameters;
 
-    var scriptProperties = PropertiesService.getScriptProperties();
-    scriptProperties.setProperty('params', JSON.stringify(e.parameters));
-
-    userProperties.deleteProperty('index');
+    userProperties.setProperty('params', JSON.stringify(e.parameters));
 
     return t.evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME);
 

@@ -2,11 +2,6 @@
 
 $(document).ready(function() {
 
-    // Make query params available in this file
-    <? for(var key in atts) {?>
-        var <?!= key; ?> = <?= atts[key]; ?>;
-    <? } ?>
-
     $('body').on('click change', '.trigger-action', function(e) {
 
         // make sure event is not fired multiple times
@@ -22,33 +17,6 @@ $(document).ready(function() {
             data.formValues = getFormValues(data.formValues);
         }
 
-        runFunction(data.action, [data], function(result) {
-
-            if(data.modal) {
-                showModal('Action completed succesfully', result || data.modal || 'Great!');
-            };
-
-            if(data.template) {
-                setContent(data.template, data, function() {
-                    $('.progress').hide();
-                });
-            }
-
-        });
-
-    });
-
-
-    $('body').on('click change', '.set-content', function(e) {
-
-        // make sure event is not fired multiple times
-        if(e.handled === true) return;
-        e.handled = true;
-
-        $('.progress').show();
-
-        var data = $(this).data();
-
         if(e.type === 'change') {
             data[data['value']] = $(this).val();
 
@@ -56,9 +24,23 @@ $(document).ready(function() {
             data.select2 = '';
         }
 
-        setContent(data.template, data, function() {
-            $('.progress').hide();
-        });
+        if(data.action) {
+            runFunction(data.action, [data], function(result) {
+
+                if(data.modal) {
+                    showModal('Action completed succesfully', result || data.modal);
+                };
+
+                if(data.template) {
+                    setContent(data.template, data);
+                } else {
+                    $('.progress').hide();
+                }
+
+            });
+        } else {
+            setContent(data.template, data);
+        }
 
     });
 

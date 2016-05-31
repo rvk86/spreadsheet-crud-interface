@@ -25,7 +25,7 @@ var sheetFunnels = getFunnels(sheets);
                     <ul id="sheets-dropdown" class="dropdown-menu">
                         <? for(var i in sheets) { ?>
                             <li>
-                                <a class="set-content"
+                                <a class="trigger-action"
                                    href="#"
                                    data-sheet-name="<?= sheets[i]; ?>"
                                    data-template="part_table">
@@ -43,7 +43,7 @@ var sheetFunnels = getFunnels(sheets);
     							<ul class="dropdown-menu">
                                     <? for(var j in sheetFunnels[key]) { ?>
         								<li>
-                                            <a class="set-content"
+                                            <a class="trigger-action"
                                                href="#"
                                                data-sheet-name="<?= key; ?>"
                                                data-template="part_funnel"
@@ -71,7 +71,7 @@ var sheetFunnels = getFunnels(sheets);
                                 </a>
                             </li>
                             <li>
-                                <a class="set-content"
+                                <a class="trigger-action"
                                    href="#"
                                    data-template="part_triggers">
                                    Manage triggers

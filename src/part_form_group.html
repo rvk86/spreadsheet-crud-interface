@@ -7,6 +7,7 @@ atts.value = atts.type === 'date' ?
                             moment(atts.value).format('YYYY-MM-DD') :
                             atts.value;
 atts.type = atts.type || 'text';
+atts.help = atts.help || '';
 atts.disabled = atts.disabled ? 'disabled' : '';
 atts.required = atts.required ? 'required' : '';
 
@@ -42,6 +43,10 @@ for(var key in atts.dataAttributes) {
                 <textarea <?!= input_atts; ?> rows="3" ><?= atts.value; ?></textarea>
             <? } else { ?>
                 <input <?!= input_atts; ?> type="<?= atts.type; ?>" value="<?= atts.value; ?>">
+            <? } ?>
+
+            <? if(atts.help !== '') { ?>
+                <span id="helpBlock" class="help-block"><?= atts.help; ?></span>
             <? } ?>
         </div>
     </div>

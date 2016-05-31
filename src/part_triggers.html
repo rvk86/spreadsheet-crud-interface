@@ -2,43 +2,69 @@
 
 var triggers = getTriggers();
 
+if(atts.sheetName) {
+    var emailColumns = getColumnNames(atts.sheetName);
+
+    emailColumns = _.filter(emailColumns[0], function(val, i) {
+
+        return emailColumns[1][i]['type'] === 'email';
+
+    });
+}
+
 ?>
 
-<table class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th>On</th>
-            <th>Sheet</th>
-            <th>Sent to</th>
-        </tr>
-    </thead>
+<div class="row row-margin">
+    <div class="col-sm-12">
+        <table class="table table-striped table-bordered col-sm-12">
+            <thead>
+                <tr>
+                    <th>Sheet</th>
+                    <th>On</th>
+                    <th>Sent to</th>
+                    <th>Subject</th>
+                </tr>
+            </thead>
 
-    <tbody>
-        <? for(var t in triggers) { ?>
-            <tr>
-                <td><?= triggers[t][0]; ?></td>
-                <td><?= triggers[t][1]; ?></td>
-                <td>
-                    <?= triggers[t][2]; ?>
-
-                    <span>
-                        (<a class="trigger-action text-right"
-                            href="#"
-                            data-action="deleteTrigger"
-                            data-trigger-index="<?= t; ?>"
-                            data-template="part_triggers"
-                            data-modal="Trigger succesfully deleted.">delete</a>)
-                    </span>
-                </td>
-            </tr>
-        <? } ?>
-    </tbody>
-</table>
+            <tbody>
+                <? for(var t in triggers) { ?>
+                    <tr>
+                        <td><?= triggers[t][0]; ?></td>
+                        <td><?= triggers[t][1]; ?></td>
+                        <td>
+                            To column: <?= triggers[t][2]; ?><br />
+                            To person: <?= triggers[t][3]; ?>
+                        </td>
+                        <td><?= triggers[t][4]; ?>
+                            <span>
+                            (<a class="trigger-action text-right"
+                                href="#"
+                                data-action="deleteTrigger"
+                                data-trigger-index="<?= t; ?>"
+                                data-template="part_triggers"
+                                data-modal="Trigger succesfully deleted.">delete</a>)
+                            </span></td>
+                    </tr>
+                <? } ?>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 
 <div class="row row-margin">
     <form class="form-horizontal col-sm-12">
         <fieldset>
+
+            <?!= templatePart('part_form_group', {
+                'type': 'select',
+                'label': 'Triggers for sheet: ',
+                'value': atts.sheetName,
+                'options': getSheetList(),
+                'required': true,
+                'classes': 'trigger-action',
+                'dataAttributes': {'data-value': 'sheetName',
+                                   'data-template': 'part_triggers'}}); ?>
 
             <?!= templatePart('part_form_group', {
                 'type': 'select',
@@ -48,17 +74,32 @@ var triggers = getTriggers();
             }); ?>
 
             <?!= templatePart('part_form_group', {
-                'type': 'select',
-                'label': 'Triggers for sheet: ',
-                'required': true,
-                'options': getSheetList()
+               'type': 'select',
+               'label': 'Email column: ',
+               'help': 'Leave empty if you do not want to send an email to the email field of the row.',
+               'disabled': !emailColumns,
+               'options': emailColumns || []
             }); ?>
 
             <?!= templatePart('part_form_group', {
                 'type': 'email',
                 'label': 'Email should be sent to: ',
-                'required': true,
+                'help': 'Leave empty if you do not want to specify a specific email address for this trigger.',
                 'value': Session.getActiveUser().getEmail()
+            }); ?>
+
+            <?!= templatePart('part_form_group', {
+                'type': 'text',
+                'label': 'Email subject: ',
+                'value': '',
+                'help': 'Leave empty for default.'
+            }); ?>
+
+            <?!= templatePart('part_form_group', {
+                'type': 'textarea',
+                'label': 'Email body: ',
+                'value': '',
+                'help': 'Leave empty for default. Default is a simple table with the values of the row.'
             }); ?>
 
             <div class="form-group">

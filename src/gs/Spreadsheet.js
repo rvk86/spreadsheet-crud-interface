@@ -14,12 +14,11 @@ function getSheetList() {
 
 function getSpreadsheet() {
 
-    var scriptProperties = PropertiesService.getScriptProperties();
-    var params = JSON.parse(scriptProperties.getProperty('params'));
+    var params = JSON.parse(userProperties.getProperty('params'));
 
-    if (!params.spreadsheetId) throw '<p>No spreadsheet ID found in URL.</p>' +
-                                     '<p>Please add this to the end of the current URL: ?spreadsheetId=???,' +
-                                     'replacing ??? by an ID of a spreadsheet that you have access to.</p>';
+    if (!params.spreadsheetId) throw 'No spreadsheet ID found in URL. ' +
+                                     'Please add this to the end of the current URL: ?spreadsheetId=???,' +
+                                     'replacing ??? by an ID of a spreadsheet that you have access to.';
 
     return SpreadsheetApp.openById(params.spreadsheetId);
 
@@ -98,15 +97,29 @@ function runTriggers(sheetName, isNew, values) {
 
     for(var t in triggers) {
 
-        if(triggers[t][0] === action && triggers[t][1] == sheetName) {
+        if(triggers[t][0] === sheetName && triggers[t][1] == action) {
+
+            var emails = [];
 
             var body = '<table>';
-
             _.each(values, function(val, index) { body += '<tr><td>' + columnNames[0][index] + '</td><td>' + val + '</td></tr>'; });
-
             body += '</table>';
 
-            GmailApp.sendEmail(triggers[t][2], 'Trigger fired ' + action, '', {htmlBody: body})
+            var subject = triggers[t][4] !== '' ? triggers[t][4] : 'Trigger fired ' + action;
+
+            if(triggers[t][2] !== '') {
+
+                var columnIndex = columnNames[0].indexOf(triggers[t][2]);
+                emails.push(values[columnIndex]);
+
+            }
+
+            if(triggers[t][3] !== '') emails.push(triggers[t][3]);
+
+            GmailApp.sendEmail('', subject, '', {
+                bcc: emails.join(','),
+                htmlBody: triggers[t][5] !== '' ? triggers[t][5] : body
+            })
 
         }
 
@@ -121,13 +134,17 @@ function getAllDataList(query) {
 
     var results = {};
     for(var s in sheetList) {
+
         var rows = JSON.parse(getAllRows(sheetList[s]));
         _.each(rows, function(row) {
+
             var title = getTitle(row);
             if(title.toLowerCase().indexOf(query.toLowerCase()) > -1) {
               results[title] = sheetList[s] + ':' + row[0];
             }
+
         });
+
     }
 
     return results;

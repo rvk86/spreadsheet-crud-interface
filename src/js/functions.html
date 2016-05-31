@@ -1,9 +1,13 @@
 <script>
 
-// Make query params available in this file
-<? for(var key in atts) {?>
-    var <?!= key; ?> = <?= atts[key]; ?>;
-<? } ?>
+window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
+
+    showModal('That is not good...', errorMsg);
+    $('.progress').hide();
+
+    return false;
+
+}
 
 
 function getFormValues(container) {
@@ -13,9 +17,11 @@ function getFormValues(container) {
 
         var val = $(this).val();
         if($(this).attr('required') && val === '') {
+
             var message = 'Not all required fields are filled. Please check your input and try again.';
             showModal('Oops!', message);
             throw message;
+
         }
 
         values.push(val);
@@ -30,25 +36,20 @@ function getFormValues(container) {
 function setContent(template, atts, after) {
 
     var target = '#dynamic-content';
-    $(target).empty();
-    appendContent(target, template, atts, after);
-
-}
-
-
-function appendContent(target, template, atts, after) {
 
     runFunction('templatePart', [template, atts], function(content) {
 
+        $(target).empty();
         $(target).append(content);
 
         $('select').select2({'theme': 'bootstrap'});
         $('.data-table').DataTable();
         if(_.isFunction(after)) after.apply(this);
+        $('.progress').hide();
 
     });
 
-};
+}
 
 
 function runFunction(func, args, success) {
@@ -56,8 +57,10 @@ function runFunction(func, args, success) {
     return google.script.run
     .withSuccessHandler(success)
     .withFailureHandler(function(error) {
+
         var title = 'Something went terribly wrong...';
         showModal(title, error.message);
+
     })[func].apply(this, args);
 
 }
