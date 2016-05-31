@@ -14,9 +14,7 @@ function getSheetList() {
 
 function getSpreadsheet() {
 
-    var params = JSON.parse(userProperties.getProperty('params'));
-
-    if (!params.spreadsheetId) throw 'No spreadsheet ID found in URL. ' +
+    if (!queryParams.spreadsheetId) throw 'No spreadsheet ID found in URL. ' +
                                      'Please add this to the end of the current URL: ?spreadsheetId=???,' +
                                      'replacing ??? by an ID of a spreadsheet that you have access to.';
 
@@ -57,9 +55,10 @@ function copySpreadsheet() {
 
 function getTriggers() {
 
-    var triggers = userProperties.getProperty('triggers');
+    var triggers = userProperties.getProperty(queryParams.spreadsheetId);
+    triggers = _.isArray(triggers) ? JSON.parse(triggers) : [];
 
-    return JSON.parse(triggers);
+    return triggers;
 
 }
 
@@ -68,7 +67,7 @@ function deleteTrigger(atts) {
 
     var triggers = _.filter(getTriggers(), function(val, i) { return i !== atts.triggerIndex; });
 
-    userProperties.setProperty('triggers', JSON.stringify(triggers));
+    userProperties.setProperty(userProperties.getProperty(queryParams.spreadsheetId);, JSON.stringify(triggers));
 
 }
 
@@ -83,7 +82,7 @@ function saveTrigger(atts) {
         triggers.push(atts.formValues);
     }
 
-    userProperties.setProperty('triggers', JSON.stringify(triggers));
+    userProperties.setProperty(userProperties.getProperty(queryParams.spreadsheetId), JSON.stringify(triggers));
 
 }
 
