@@ -32,7 +32,7 @@ $(document).ready(function() {
         $('.progress').show();
 
         var result = typeaheadResults[sug].split(':');
-        setContent('part_form', {'sheetName': result[0], 'rowId': result[1]}, function() {
+        setContent('part_single_row', {'sheetName': result[0], 'rowId': result[1]}, function() {
             $('.typeahead').typeahead('val', '');
             $('.progress').hide();
         });

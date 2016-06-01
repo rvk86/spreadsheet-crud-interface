@@ -24,6 +24,8 @@ function submitForm(atts) {
 
     runTriggers(atts.sheetName, isNew, atts.formValues);
 
+    return {'rowId': atts.formValues[0]};
+
 }
 
 

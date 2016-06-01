@@ -75,4 +75,5 @@ If you set it to a string, it should reference another sheet in the same spreads
 ## Known limitations
 
  * Makes use of html5 field types, so only works in modern browsers. (Chrome preferred)
+ * When deleting rows, relationships will not be deleted. This means that rows might point to a non-existing row in the related sheet.
  * With a lot of rows, the tool can become slow. A solution could be to archive the file (make a copy through the interface) and delete rows from the original file.

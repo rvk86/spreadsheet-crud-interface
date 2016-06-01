@@ -38,18 +38,28 @@ var isNew = fields[0]['value'] === '';
             <? } ?>
             <div class="form-group">
                 <label class="col-sm-4 control-label"></label>
-                    <div class="col-sm-4">
-                        <button class="trigger-action btn btn-primary"
-                                href="#"
-                                type="button"
-                                data-action="submitForm"
-                                data-sheet-name="<?= atts.sheetName; ?>"
-                                data-form-values="#dynamic-content"
-                                data-row-id="<?= atts.rowId; ?>"
-                                data-template="part_table"
-                                data-modal="Row succesfully added.">
-                                <span aria-hidden="true">Save row</span>
-                        </button>
+                    <div class="col-sm-8">
+                        <div class="btn-group" role="group">
+                                <button class="trigger-action btn btn-warning"
+                                        href="#"
+                                        type="button"
+                                        data-sheet-name="<?= atts.sheetName; ?>"
+                                        data-row-id="<?= atts.rowId; ?>"
+                                        data-template=<?= isNew ? "part_table" : "part_single_row"; ?>>
+                                        <span aria-hidden="true">Cancel</span>
+                                </button>
+                                <button class="trigger-action btn btn-info"
+                                        href="#"
+                                        type="button"
+                                        data-action="submitForm"
+                                        data-sheet-name="<?= atts.sheetName; ?>"
+                                        data-form-values="#dynamic-content"
+                                        data-row-id="<?= atts.rowId; ?>"
+                                        data-template="part_single_row"
+                                        data-modal="Row succesfully added.">
+                                        <span aria-hidden="true">Save row</span>
+                                </button>
+                        </div>
                 </div>
             </div>
         </fieldset>

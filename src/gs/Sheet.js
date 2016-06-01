@@ -50,7 +50,7 @@ function getHtmlRows(sheetName) {
                                'href="#"' +
                                'data-sheet-name="' + sheetName + '"' +
                                'data-row-id="' + rows[i][0] + '"' +
-                               'data-template="part_form">' +
+                               'data-template="part_single_row">' +
                                rows[i][c] +
                             '</a>' +
                         '</td>';
@@ -71,10 +71,7 @@ function getFormFields(sheetName, rowId) {
     var s = getSpreadsheet().getSheetByName(sheetName);
 
     var columnNames = getColumnNames(sheetName);
-    var rowPosition = rowId ? getRowPosition(s, rowId) : -1;
-    var row = rowPosition > -1 ? s.getRange(rowPosition, 1, 1, s.getLastColumn()).getValues()[0] : false;
-
-
+    var row = findRow(sheetName, rowId);
 
     var fields = [];
     for (var i in columnNames[0]) {
@@ -88,6 +85,18 @@ function getFormFields(sheetName, rowId) {
     };
 
     return fields;
+
+}
+
+
+function findRow(sheetName, rowId) {
+
+    var s = getSpreadsheet().getSheetByName(sheetName);
+
+    var rowPosition = rowId ? getRowPosition(s, rowId) : -1;
+    var row = rowPosition > -1 ? s.getRange(rowPosition, 1, 1, s.getLastColumn()).getValues()[0] : false;
+
+    return row;
 
 }
 

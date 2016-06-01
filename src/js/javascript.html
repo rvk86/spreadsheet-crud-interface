@@ -4,6 +4,7 @@ $(document).ready(function() {
 
     $('body').on('click change', '.trigger-action', function(e) {
 
+        e.preventDefault();
         // make sure event is not fired multiple times
         if(e.handled === true) return;
         e.handled = true;
@@ -28,10 +29,13 @@ $(document).ready(function() {
             runFunction(data.action, [data], function(result) {
 
                 if(data.modal) {
-                    showModal('Action completed succesfully', result || data.modal);
+                    showModal('Action completed succesfully', _.isString(result) ? result : data.modal);
                 };
 
                 if(data.template) {
+
+                    // Make return value part of data object
+                    if(_.isObject(result)) _.extend(data, result);
                     setContent(data.template, data);
                 } else {
                     $('.progress').hide();

@@ -1,0 +1,69 @@
+<?
+
+var fields = getFormFields(atts.sheetName, atts.rowId);
+
+?>
+
+<div class="row row-margin">
+    <div class="btn-group col-sm-12" role="group">
+            <button class="trigger-action btn btn-warning"
+                  href="#"
+                  type="button"
+                  data-action="deleteRow"
+                  data-sheet-name="<?= atts.sheetName; ?>"
+                  data-row-id="<?= atts.rowId; ?>"
+                  data-template="part_table"
+                  data-modal="Row succesfully deleted.">
+                  <span aria-hidden="true">Delete row</span>
+            </button>
+            <button class="trigger-action btn btn-info"
+               href="#"
+               type="button"
+               data-sheet-name="<?= atts.sheetName; ?>"
+               data-row-id="<?= atts.rowId; ?>"
+               data-template="part_form">
+                <span aria-hidden="true">Edit row</span>
+            </button>
+    </div>
+</div>
+
+<div class="row row-margin">
+    <div class="col-sm-offset-4 col-sm-4">
+        <h3><?= atts.sheetName; ?></h3>
+    </div>
+</div>
+
+<div class="row row-margin">
+    <form class="form-horizontal col-sm-12" data-sheet-name="<?= atts.sheetName; ?>">
+        <fieldset>
+            <? for(var i in fields) { ?>
+
+                <div class="form-group">
+
+                        <label class="col-sm-4 control-label" for="<?= fields[i].id; ?>"><?= fields[i].label || fields[i].id; ?></label>
+
+                    <div class="col-sm-4">
+                        <p class="form-control-static">
+                            <? if(_.isString(fields[i].options)) { ?>
+                                <? var relation = findRow(fields[i].options, fields[i]['value']); ?>
+                                <a class="trigger-action"
+                                   href="#"
+                                   data-sheet-name="<?= fields[i].options; ?>"
+                                   data-row-id="<?= fields[i]['value']; ?>"
+                                   data-template="part_single_row">
+                                   <?= getTitle(relation); ?>
+                                </a>
+                            <? } else { ?>
+                                <?= fields[i].value; ?>
+                            <? } ?>
+                        </p>
+
+                        <? if(fields[i].help) { ?>
+                            <span id="helpBlock" class="help-block"><?= fields[i].help; ?></span>
+                        <? } ?>
+                    </div>
+                </div>
+            <? } ?>
+        </fieldset>
+    </form>
+</div>
