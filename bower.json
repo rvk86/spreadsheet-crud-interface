@@ -1,0 +1,28 @@
+{
+  "name": "spreadsheet-crud-interface",
+  "homepage": "https://github.com/rvk86/spreadsheet-crud-interface",
+  "description": "",
+  "main": "",
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.4",
+    "jquery-migrate": "^1.4.0",
+    "moment": "momentjs#^2.13.0",
+    "underscore": "^1.8.3",
+    "select2": "^4.0.3",
+    "typeahead.js": "^0.11.1",
+    "datatables.net": "^1.10.12",
+    "datatables.net-bs": "^1.10.12",
+    "bootstrap": "^3.3.6"
+  }
+}

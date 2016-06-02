@@ -1,3 +1,8 @@
+<!--
+sheetName
+rowId
+ -->
+ 
 <?
 
 var fields = getFormFields(atts.sheetName, atts.rowId);
@@ -44,7 +49,7 @@ var fields = getFormFields(atts.sheetName, atts.rowId);
 
                     <div class="col-sm-4">
                         <p class="form-control-static">
-                            <? if(_.isString(fields[i].options)) { ?>
+                            <? if(_.isString(fields[i].options) && fields[i].value !== '') { ?>
                                 <? var relation = findRow(fields[i].options, fields[i]['value']); ?>
                                 <a class="trigger-action"
                                    href="#"

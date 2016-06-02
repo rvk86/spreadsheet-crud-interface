@@ -47,7 +47,7 @@ function deleteRow(atts) {
 function getRowPosition(s, rowId) {
 
     var ids = _.map(
-                    _.flatten(_getFullDataRange(s, 1, 1).getValues()), function(id) { return Number(id); }
+              _.flatten(_getFullDataRange(s, 1, 1).getValues()), function(id) { return Number(id); }
                 );
 
     var index = ids.indexOf(Number(rowId));
@@ -64,9 +64,9 @@ function setAuditColumns(s) {
     s.getRange(1, 1).setValue('_id');
     s.getRange(2, 1).setValue('{"type": "hidden"}');
 
-    if(numRows > titleColumns) {
+    if(numRows > titleRows) {
         var ids = _.map(_.range(1, numRows - 1), function(num) { return [num]; });
-        s.getRange(1 + titleColumns, 1, numRows - titleColumns).setValues(ids);
+        s.getRange(1 + titleRows, 1, numRows - titleRows).setValues(ids);
     }
 
     s.insertColumnAfter(1);
@@ -77,19 +77,19 @@ function setAuditColumns(s) {
 }
 
 
-function updateCell(sheetName, rowId, cellIndex, value) {
+function updateCell(atts) {
 
-    var s = getSpreadsheet().getSheetByName(sheetName);
+    var s = getSpreadsheet().getSheetByName(atts.sheetName);
 
-    var position = getRowPosition(s, rowId);
+    var position = getRowPosition(s, atts.rowId);
     var range = s.getRange(position, 1, 1, s.getLastColumn());
 
     var values = range.getValues()[0];
-    values[cellIndex] = value;
+    values[atts.columnIndex] = atts.value;
 
     range.setValues([values]);
 
-    runTriggers(sheetName, false, values);
+    runTriggers(atts.sheetName, false, values);
 
 }
 
@@ -104,7 +104,7 @@ function updateRow(s, values) {
 
 function getTitle(row) {
 
-    return row[auditRows] + ' - ' + row[auditRows + 1] + ' (' + row[0] + ')';
+    return row[auditColumns] + ' - ' + row[auditColumns + 1] + ' (' + row[0] + ')';
 
 }
 
@@ -117,7 +117,7 @@ function createOptionsObject(options, value) {
 
     } else if(_.isString(options)) {
 
-        var rows = JSON.parse(getAllRows(options));
+        var rows = getAllRows(options);
         rows = getDataOnly(rows);
 
         var options =   _.object(

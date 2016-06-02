@@ -2,7 +2,7 @@ function getColumnNames(sheetName) {
 
     var s = getSpreadsheet().getSheetByName(sheetName);
 
-    var columnNames = s.getRange(1, 1, titleColumns, s.getLastColumn()).getValues();
+    var columnNames = s.getRange(1, 1, titleRows, s.getLastColumn()).getValues();
     columnNames[1] = _.map(columnNames[1], function(cell) {
 
         try {
@@ -29,29 +29,37 @@ function getAllRows(sheetName) {
 
     var rows = _getFullDataRange(s).getValues();
 
-    // Stringify is necessary because of dates, probably
-    return JSON.stringify(rows);
+    return rows;
+
+}
+
+
+function getAllRowsJSON(sheetName) {
+
+    return JSON.stringify(getAllRows(sheetName));
 
 }
 
 // Generating the html on the backend is a looot faster than doing the loop in the template itself.
 function getHtmlRows(sheetName) {
 
-    var rows = getDataOnly(JSON.parse(getAllRows(sheetName)));
+    var rows = getDataOnly(getAllRows(sheetName));
 
     var htmlRows = '';
 
     for(var i in rows) {
 
         var htmlRow = '<tr>';
-        for(var c = auditRows; c < rows[i].length; c++) {
+
+        for(var c = auditColumns; c < rows[i].length; c++) {
+            var value = _.isDate(rows[i][c]) ? moment(rows[i][c]).format(dateFormat) : rows[i][c];
             htmlRow +=  '<td>' +
                             '<a class="trigger-action"' +
                                'href="#"' +
                                'data-sheet-name="' + sheetName + '"' +
                                'data-row-id="' + rows[i][0] + '"' +
                                'data-template="part_single_row">' +
-                               rows[i][c] +
+                               value +
                             '</a>' +
                         '</td>';
         }
@@ -113,7 +121,7 @@ function _getFullDataRange(s, fromCol, numCols) {
 
 function getDataOnly(rows) {
 
-    var data = rows.slice(titleColumns);
+    var data = rows.slice(titleRows);
 
     return data;
 

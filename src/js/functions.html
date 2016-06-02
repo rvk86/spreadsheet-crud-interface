@@ -3,7 +3,7 @@
 window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
 
     showModal('That is not good...', errorMsg);
-    $('.progress').hide();
+    loading.stop();
 
     return false;
 
@@ -44,10 +44,11 @@ function setContent(template, atts, after) {
 
         $('.select2').select2({'theme': 'bootstrap'});
         $('.data-table').DataTable();
+
         if(_.isFunction(after)) after.apply(this);
-        
+
         window.scrollTo(0, 0);
-        $('.progress').hide();
+        loading.stop();
 
     });
 
@@ -62,6 +63,7 @@ function runFunction(func, args, success) {
 
         var title = 'Something went terribly wrong...';
         showModal(title, error.message);
+        loading.stop();
 
     })[func].apply(this, args);
 
@@ -75,5 +77,19 @@ function showModal(title, message) {
     $('.modal').modal();
 
 };
+
+
+var loading = {
+
+    start: function() {
+        $('.progress').show();
+    },
+
+    stop: function() {
+        $('.progress').hide();
+    }
+
+
+}
 
 </script>

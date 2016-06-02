@@ -1,0 +1,77 @@
+<?
+
+var rows = JSON.parse(getAllRowsJSON(atts.sheetName));
+
+var columnNames = rows[0];
+var columnOptions = _.object(rows[0], rows[1]);
+var date = JSON.parse(columnOptions[atts.dateField]);
+
+rows = getDataOnly(rows);
+
+if(atts.user) {
+    rows = _.filter(rows, function(row) { return row[createdBy] === atts.user});
+}
+
+if(atts.date) {
+    rows = _.filter(rows, function(row) { return row[createdBy] === atts.user});
+}
+
+var columnIndex = columnNames.indexOf(atts.dateField);
+var groups = _.groupBy(rows, function(row){ return row[columnIndex]; });
+
+var users = getUsers(atts.sheetName);
+
+?>
+
+<div class="row row-margin">
+    <?!= templatePart('part_form_group', {'type': 'select',
+                                          'options': users,
+                                          'classes': 'trigger-action',
+                                          'value': atts.user,
+                                          'dataAttributes': {'data-sheet-name': atts.sheetName,
+                                                             'data-funnel-field': atts.funnelField,
+                                                             'data-template': 'part_funnel',
+                                                             'data-value': 'user'}}); ?>
+</div>
+
+<div class="row row-margin">
+    <div class="col-sm-12">
+        <? for(var j = 0; j < options.length - 1; j++) { ?>
+
+            <td class="funnel-stage" data-value="<?= options[j]; ?>">
+                <? for(var k in groups[options[j]]) { ?>
+
+                    <div class="funnel-item btn btn-primary"
+                         data-sheet-name="<?= atts.sheetName; ?>"
+                         data-row-id="<?= groups[options[j]][k][0]; ?>"
+                         data-column-index="<?= columnIndex; ?>">
+
+                         <a class="trigger-action"
+                            href="#"
+                            data-sheet-name="<?= atts.sheetName; ?>"
+                            data-row-id="<?= groups[options[j]][k][0]; ?>"
+                            data-template="part_single_row">
+                             <?= getTitle(groups[options[j]][k]); ?>
+                         </a>
+                         <a class="trigger-action glyphicon glyphicon-folder-open pull-right"
+                               aria-hidden="true"
+                               data-action="updateCell"
+                               data-template="part_funnel"
+                               data-user="<?= atts.user; ?>"
+                               data-funnel-field="<?=atts.funnelField; ?>"
+                               data-sheet-name="<?= atts.sheetName; ?>"
+                               data-row-id="<?= groups[options[j]][k][0]; ?>"
+                               data-column-index="<?= columnIndex; ?>"
+                               data-value="<?= options[options.length - 1]; ?>"></a><br />
+                         <span class="small"><?= groups[options[j]][k][1]; ?></span>
+
+                    </div>
+
+                <? } ?>
+            </td>
+
+        <? } ?>
+    </div>
+</div>
+
+<?!= templatePart('funnel'); ?>

@@ -1,3 +1,7 @@
+<!--
+sheetName
+ -->
+
 <?
 
 var rows = getHtmlRows(atts.sheetName);
@@ -22,7 +26,7 @@ var columnNames = getColumnNames(atts.sheetName)[0];
             <table class="table table-striped table-bordered data-table" cellspacing="0" width="100%">
                 <thead>
                     <tr>
-                        <? for(var t = auditRows; t < columnNames.length; t++) { ?>
+                        <? for(var t = auditColumns; t < columnNames.length; t++) { ?>
                             <th><?= columnNames[t]; ?></th>
                         <? } ?>
                     </tr>

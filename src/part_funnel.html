@@ -1,6 +1,11 @@
+<!--
+sheetName
+funnelField
+[user]
+ -->
 <?
 
-var rows = JSON.parse(getAllRows(atts.sheetName));
+var rows = JSON.parse(getAllRowsJSON(atts.sheetName));
 
 var columnNames = rows[0];
 var columnOptions = _.object(rows[0], rows[1]);
@@ -33,7 +38,7 @@ var users = getUsers(atts.sheetName);
 <div class="row row-margin">
     <div class="col-sm-12">
         <div class="table-responsive">
-            <table class="table table-bordered" cellspacing="0" width="100%" data-column-index="<?= columnIndex; ?>">
+            <table class="table table-bordered" cellspacing="0" width="100%">
 
                 <thead>
                     <tr>
@@ -43,11 +48,6 @@ var users = getUsers(atts.sheetName);
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="funnel-stage last-stage text-center bg-danger" style="display: none;" data-value="<?= options[options.length - 1]; ?>">
-                        <td colspan="<?=options.length; ?>">
-                            <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
-                        </td>
-                    </tr>
                     <tr>
                         <? for(var j = 0; j < options.length - 1; j++) { ?>
 
@@ -56,16 +56,28 @@ var users = getUsers(atts.sheetName);
 
                                     <div class="funnel-item btn btn-primary"
                                          data-sheet-name="<?= atts.sheetName; ?>"
-                                         data-row-id="<?= groups[options[j]][k][0]; ?>">
+                                         data-row-id="<?= groups[options[j]][k][0]; ?>"
+                                         data-column-index="<?= columnIndex; ?>">
 
-                                     <a class="trigger-action"
-                                        href="#"
-                                        data-sheet-name="<?= atts.sheetName; ?>"
-                                        data-row-id="<?= groups[options[j]][k][0]; ?>"
-                                        data-template="part_single_row">
-                                         <?= getTitle(groups[options[j]][k]); ?>
-                                     </a><br />
-                                     <span class="small"><?= groups[options[j]][k][1]; ?></span>
+                                         <a class="trigger-action"
+                                            href="#"
+                                            data-sheet-name="<?= atts.sheetName; ?>"
+                                            data-row-id="<?= groups[options[j]][k][0]; ?>"
+                                            data-template="part_single_row">
+                                             <?= getTitle(groups[options[j]][k]); ?>
+                                         </a>
+                                         <a class="trigger-action glyphicon glyphicon-folder-open pull-right"
+                                               aria-hidden="true"
+                                               data-action="updateCell"
+                                               data-template="part_funnel"
+                                               data-user="<?= atts.user; ?>"
+                                               data-funnel-field="<?=atts.funnelField; ?>"
+                                               data-sheet-name="<?= atts.sheetName; ?>"
+                                               data-row-id="<?= groups[options[j]][k][0]; ?>"
+                                               data-column-index="<?= columnIndex; ?>"
+                                               data-value="<?= options[options.length - 1]; ?>"></a><br />
+                                         <span class="small"><?= groups[options[j]][k][1]; ?></span>
+
                                     </div>
 
                                 <? } ?>

@@ -3,9 +3,10 @@ var moment = Moment.load();
 var userProperties = PropertiesService.getUserProperties();
 var queryParams = JSON.parse(userProperties.getProperty('params'));
 
-var titleColumns = 2;
-var auditRows = 2;
+var titleRows = 2;
+var auditColumns = 2;
 var createdBy = 1;
+var dateFormat = 'DD-MM-YYYY';
 
 /**
 * Renders html output
@@ -16,6 +17,7 @@ function doGet(e) {
 
     var t = HtmlService.createTemplateFromFile('index');
     t.params = e.parameters;
+    t.params.dateFormat = dateFormat;
 
     userProperties.setProperty('params', JSON.stringify(e.parameters));
 
@@ -25,6 +27,7 @@ function doGet(e) {
             .setSandboxMode(HtmlService.SandboxMode.IFRAME);
 
 };
+
 
 /**
 * Renders html template parts
@@ -41,3 +44,17 @@ function templatePart(name, atts) {
     return t.evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME).getContent();
 
 };
+
+
+/**
+* Including files without injecting variables and without templating
+*
+* @param {string} name the name of the file to be included
+*/
+function include(name) {
+
+  return HtmlService.createHtmlOutputFromFile(name)
+  .setSandboxMode(HtmlService.SandboxMode.IFRAME)
+  .getContent();
+
+}

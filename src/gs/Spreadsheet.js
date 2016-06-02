@@ -127,14 +127,14 @@ function runTriggers(sheetName, isNew, values) {
 }
 
 
-function getAllDataList(query) {
+function searchAll(query) {
 
     var sheetList = getSheetList();
 
     var results = {};
     for(var s in sheetList) {
 
-        var rows = JSON.parse(getAllRows(sheetList[s]));
+        var rows = getAllRows(sheetList[s]);
         _.each(rows, function(row) {
 
             var title = getTitle(row);
@@ -149,3 +149,67 @@ function getAllDataList(query) {
     return results;
 
 }
+
+
+function setValidationRule(optionsJSONRange) {
+
+    var options = JSON.parse(optionsJSONRange.getValue());
+    var type = options['type'];
+    var selectOptions = options['options'];
+    var columnLetter = optionsJSONRange.getA1Notation().replace(/[0-9]/g, '');
+    var startRow = titleRows + 1;
+
+    var rule = SpreadsheetApp.newDataValidation().setAllowInvalid(false);
+    switch(type) {
+        case 'select':
+            if(_.isObject(selectOptions)) {
+                selectOptions = _.values(selectOptions);
+            }
+
+            if(!_.isString(selectOptions)) {
+                rule = rule.requireValueInList(selectOptions)
+                           .setHelpText('Selected option not in list');
+            }
+            break;
+        case 'email':
+            rule = rule.requireTextIsEmail()
+                       .setHelpText('Email is not valid');
+            break;
+        case 'number':
+            rule = rule.requireFormulaSatisfied('=ISNUMBER(' + columnLetter + startRow + ')')
+                       .setHelpText('Value is not a number');
+            break;
+        case 'date':
+            rule = rule.requireDate()
+                       .setHelpText('Value is not a date');
+            break;
+    }
+
+    validationRange = optionsJSONRange.getSheet().getRange(columnLetter + startRow + ':' + columnLetter);
+    if(rule.getCriteriaType()) {
+        validationRange.setDataValidation(rule);
+    } else {
+        validationRange.clearDataValidations();
+    }
+
+}
+
+
+function setup() {
+
+    var sheets = getSpreadsheet().getSheets();
+
+    _.each(sheets, function(s) {
+
+        _.each(_.range(1, s.getLastColumn() + 1), function(i) {
+
+            setValidationRule(s.getRange(titleRows, i));
+
+        })
+
+    });
+
+}
+
+
+

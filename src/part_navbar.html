@@ -15,7 +15,7 @@ var sheetFunnels = getFunnels(sheets);
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Polymath Ventures</a>
+            <a class="navbar-brand" href="#"><?= getSpreadsheet().getName(); ?></a>
         </div>
 
         <div id="main-navbar" class="collapse navbar-collapse">
@@ -68,6 +68,14 @@ var sheetFunnels = getFunnels(sheets);
                                    data-action="copySpreadsheet"
                                    data-modal="true">
                                    Copy spreadsheet
+                                </a>
+                            </li>
+                            <li>
+                                <a class="trigger-action"
+                                   href="#"
+                                   data-action="setup"
+                                   data-modal="Setup completed successfully">
+                                   Run setup
                                 </a>
                             </li>
                             <li>

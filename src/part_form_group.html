@@ -13,6 +13,7 @@ atts.required = atts.required ? 'required' : '';
 
 if(atts.options) {
 
+    // Only make relationship dropdowns a select2
     if(_.isString(atts.options)) {
         atts.classes += ' select2';
     }

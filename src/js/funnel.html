@@ -7,24 +7,21 @@ $(document).ready(function() {
         var sortable = Sortable.create(this, {
             group: 'funnel-stage',
             onStart: function (evt) {
-                $('.last-stage').show();
             },
             onEnd: function (evt) {
-                $('.last-stage').hide();
             },
             onAdd: function (evt) {
 
-                $('.progress').show();
+                loading.start();
                 sortable.option("disabled", true);
 
                 var data = $(evt.item).data();
-                var columnIndex = $(evt.item).parents('table').data('columnIndex');
-                var val = $(evt.item).parents('.funnel-stage').data('value');
+                data.value = $(evt.item).parents('.funnel-stage').data('value');
 
-                runFunction('updateCell', [data.sheetName, data.rowId, columnIndex, val], function(result) {
+                runFunction('updateCell', [data], function(result) {
 
                     sortable.option("disabled", false);
-                    $('.progress').hide();
+                    loading.stop();
 
                 });
 
