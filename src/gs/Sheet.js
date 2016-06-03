@@ -3,6 +3,11 @@ function getColumnNames(sheetName) {
     var s = getSpreadsheet().getSheetByName(sheetName);
 
     var columnNames = s.getRange(1, 1, titleRows, s.getLastColumn()).getValues();
+
+    if(columnNames[0][0] !== '_id') {
+        setAuditColumns(s);
+    }
+
     columnNames[1] = _.map(columnNames[1], function(cell) {
 
         try {
@@ -39,6 +44,27 @@ function getAllRowsJSON(sheetName) {
     return JSON.stringify(getAllRows(sheetName));
 
 }
+
+
+function setAuditColumns(s) {
+
+    var numRows = s.getLastRow();
+
+    s.insertColumnBefore(1);
+    s.getRange(1, 1).setValue('_id');
+    s.getRange(2, 1).setValue('{"type": "hidden"}');
+
+    if(numRows > titleRows) {
+        var ids = _.map(_.range(1, numRows - 1), function(num) { return [num]; });
+        s.getRange(1 + titleRows, 1, numRows - titleRows).setValues(ids);
+    }
+
+    s.insertColumnAfter(1);
+    s.getRange(1, 2).setValue('_created_by');
+    s.getRange(2, 2).setValue('{"type": "hidden"}');
+
+}
+
 
 // Generating the html on the backend is a looot faster than doing the loop in the template itself.
 function getHtmlRows(sheetName) {

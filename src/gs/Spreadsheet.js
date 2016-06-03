@@ -3,9 +3,12 @@ function getSheetList() {
     var sheets = getSpreadsheet().getSheets();
 
     var sheetList = [];
-    for(var i in sheets) {
-        sheetList.push(sheets[i].getName());
-    };
+    _.each(sheets, function(s) {
+
+        var sName = s.getName();
+        if(sName[0] !== '_') sheetList.push(sName);
+
+    });
 
     return sheetList;
 

@@ -4,12 +4,6 @@ function submitForm(atts) {
 
     var columns = getColumnNames(atts.sheetName);
 
-    // If _id column does not exist, create and populate audit columns
-    if(columns[0][0] !== '_id') {
-        setAuditColumns(s);
-        atts.formValues.unshift('', '');
-    }
-
     var isNew = atts.formValues[0] === '';
     atts.formValues[1] = Session.getActiveUser().getEmail();
 
@@ -17,7 +11,15 @@ function submitForm(atts) {
         var lastId = s.getRange(s.getLastRow(), 1).getValue();
         atts.formValues[0] = _.isNumber(lastId) ? lastId + 1 : 1;
 
-        var result = s.appendRow(atts.formValues);
+        // The append row method doesn't detect the validations at first, so appending a row with invalid data is possible.
+        // That's why this is necessary to catch errors right away. Not the most elegant way, think about alternatives.
+        try {
+            var result = s.getRange(s.getLastRow() + 1, 1, 1, s.getLastColumn()).setValues([atts.formValues]);
+            SpreadsheetApp.flush();
+        } catch (e) {
+            deleteRow({'sheetName': atts.sheetName, 'rowId': atts.formValues[0]});
+            throw e;
+        }
     } else {
         var result = updateRow(s, atts.formValues);
     }
@@ -52,27 +54,6 @@ function getRowPosition(s, rowId) {
 
     var index = ids.indexOf(Number(rowId));
     return index > - 1 ? index + 1 : -1;
-
-}
-
-
-function setAuditColumns(s) {
-
-    var numRows = s.getLastRow();
-
-    s.insertColumnBefore(1);
-    s.getRange(1, 1).setValue('_id');
-    s.getRange(2, 1).setValue('{"type": "hidden"}');
-
-    if(numRows > titleRows) {
-        var ids = _.map(_.range(1, numRows - 1), function(num) { return [num]; });
-        s.getRange(1 + titleRows, 1, numRows - titleRows).setValues(ids);
-    }
-
-    s.insertColumnAfter(1);
-    s.getRange(1, 2).setValue('_created_by');
-    s.getRange(2, 2).setValue('{"type": "hidden"}');
-    s.hideColumns(1, 2);
 
 }
 

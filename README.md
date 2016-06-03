@@ -16,8 +16,8 @@ Check it out here: https://script.google.com/macros/s/AKfycbyxwOdf4-TqNH86tKhA8Q
 ## Usage
 
  * When accessing the app, add a query parameter to the url "?spreadsheetId=???", replacing ??? by your spreadsheet ID.
- * Each sheet represents a data type (person, organization, deal). Names should not contain spaces & should be singular. Column names should be unique.
- * Each column represents a data field. Put the field names on the first row of the sheet. Names without spaces.
+ * Each sheet represents a data type (person, organization, deal). Names should not contain spaces & should be singular. Sheets with a name that starts with an underscore will not show up in the interface.
+ * Each column represents a data field. Put the field names on the first row of the sheet. Names should be unique and should not contain spaces.
  * On the second row of each sheet a JSON string should be defined with the characteristics of the field.
 
 ```js
