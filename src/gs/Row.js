@@ -8,25 +8,61 @@ function submitForm(atts) {
     atts.formValues[1] = Session.getActiveUser().getEmail();
 
     if(isNew) {
-        var lastId = s.getRange(_getLastRowWithData(s), 1).getValue();
-        atts.formValues[0] = _.isNumber(lastId) ? lastId + 1 : 1;
-
-        // The append row method doesn't detect the validations at first, so appending a row with invalid data is possible.
-        // That's why this is necessary to catch errors right away. Not the most elegant way, think about alternatives.
-        try {
-            var result = s.getRange(_getLastRowWithData(s) + 1, 1, 1, s.getLastColumn()).setValues([atts.formValues]);
-            SpreadsheetApp.flush();
-        } catch (e) {
-            deleteRow({'sheetName': atts.sheetName, 'rowId': atts.formValues[0]});
-            throw e;
-        }
+        var result = _appendRow(s, atts.formValues);
     } else {
         var result = updateRow(s, atts.formValues);
     }
 
     runTriggers(atts.sheetName, isNew, atts.formValues);
 
-    return {'rowId': atts.formValues[0]};
+    return {'rowId': result[0]};
+
+}
+
+
+function _appendRow(s, values) {
+
+    var lastId = s.getRange(_getLastRowWithData(s), 1).getValue();
+    values[0] = _.isNumber(lastId) ? lastId + 1 : 1;
+
+    // The append row method doesn't detect the validations at first, so appending a row with invalid data is possible.
+    // That's why this is necessary to catch errors right away. Not the most elegant way, think about alternatives.
+    try {
+
+        var result = s.getRange(_getLastRowWithData(s) + 1, 1, 1, s.getLastColumn()).setValues([values]);
+        SpreadsheetApp.flush();
+
+    } catch (e) {
+
+        deleteRow({'sheetName': s.getName(), 'rowId': values[0]});
+        throw e;
+
+    }
+
+    return values;
+
+}
+
+
+function duplicateRow(atts) {
+
+    var s = getSpreadsheet().getSheetByName(atts.sheetName);
+    var values = findRow(atts.sheetName, atts.rowId);
+
+    _appendRow(s, stripFormulas(values));
+
+    return {'rowId': values[0]};
+
+}
+
+
+function stripFormulas(values) {
+
+    for(var i in values) {
+        values[i] = values[i][0] === '=' ? '' : values[i];
+    }
+
+    return values;
 
 }
 
@@ -78,7 +114,9 @@ function updateCell(atts) {
 function updateRow(s, values) {
 
     var position = getRowPosition(s, values[0]);
-    return s.getRange(position, 1, 1, s.getLastColumn()).setValues([values]);
+    s.getRange(position, 1, 1, s.getLastColumn()).setValues([values]);
+
+    return values;
 
 }
 

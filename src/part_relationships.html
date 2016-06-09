@@ -2,22 +2,39 @@
 
 <? for(var r in relationships) { ?>
 
-    <h3><?= r; ?></h3>
+    <h4><?= r; ?></h4>
 
     <ul>
 
         <? for(var i in relationships[r]) { ?>
 
-            <li><a class="trigger-action"
-               href="#"
-               data-sheet-name="<?= r; ?>"
-               data-row-id="<?= relationships[r][i][0]; ?>"
-               data-template="part_single_row">
-                <?= getTitle(relationships[r][i]); ?>
-            </a></li>
+            <li>
+                <a class="trigger-action"
+                   href="#"
+                   data-sheet-name="<?= r; ?>"
+                   data-row-id="<?= relationships[r][i][0]; ?>"
+                   data-template="part_single_row">
+                    <?= getTitle(relationships[r][i]); ?></a>
+                (<a class="trigger-action"
+                   href="#"
+                   data-action="duplicateRow"
+                   data-sheet-name="<?= r; ?>"
+                   data-row-id="<?= relationships[r][i][0]; ?>"
+                   data-template="part_form">
+                    <span aria-hidden="true">Duplicate row</span></a>)
 
+            </li>
+
+        <? } ?>
+
+        <? if(relationships[r].length === 0) { ?>
+            <li>No <?= r; ?> found for this <?= atts.sheetName; ?></li>
         <? } ?>
 
     </ul>
 
+<? } ?>
+
+<? if(_.keys(relationships).length === 0) { ?>
+    <h4>No relationships found for this <?= atts.sheetName; ?></h4>
 <? } ?>

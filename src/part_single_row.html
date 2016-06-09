@@ -6,6 +6,7 @@ rowId
 <?
 
 var fields = getFormFields(atts.sheetName, atts.rowId);
+var row = _.map(fields, function(field) { return field['value']; });
 
 ?>
 
@@ -29,12 +30,21 @@ var fields = getFormFields(atts.sheetName, atts.rowId);
                data-template="part_form">
                 <span aria-hidden="true">Edit row</span>
             </button>
+            <button class="trigger-action btn btn-success"
+               href="#"
+               type="button"
+               data-action="duplicateRow"
+               data-sheet-name="<?= atts.sheetName; ?>"
+               data-row-id="<?= atts.rowId; ?>"
+               data-template="part_form">
+                <span aria-hidden="true">Duplicate row</span>
+            </button>
     </div>
 </div>
 
 <div class="row row-margin">
-    <div class="col-sm-offset-4 col-sm-4">
-        <h3><?= atts.sheetName; ?></h3>
+    <div class="col-sm-12">
+        <h3><?= atts.sheetName; ?>: <?= getTitle(row); ?></h3>
     </div>
 </div>
 
@@ -91,6 +101,6 @@ var fields = getFormFields(atts.sheetName, atts.rowId);
         </form>
     </div>
     <div role="tabpanel" class="tab-pane fade" id="relationships">
-        <h3>One second please...</h3>
+        <h4>One second please...</h4>
     </div>
 </div>
