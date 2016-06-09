@@ -48,7 +48,7 @@ function getAllRowsJSON(sheetName) {
 
 function setAuditColumns(s) {
 
-    var numRows = s.getLastRow();
+    var numRows = _getLastRowWithData(s);
 
     s.insertColumnBefore(1);
     s.getRange(1, 1).setValue('_id');
@@ -130,6 +130,16 @@ function findRow(sheetName, rowId) {
     var rowPosition = rowId ? getRowPosition(s, rowId) : -1;
     var row = rowPosition > -1 ? s.getRange(rowPosition, 1, 1, s.getLastColumn()).getValues()[0] : false;
 
+    if(row) {
+        var formulas = s.getRange(rowPosition, 1, 1, s.getLastColumn()).getFormulas()[0];
+
+        for(var i = 0; i < formulas.length; i++) {
+            if(formulas[i] !== '') {
+                row[i] = formulas[i];
+            }
+        }
+    }
+
     return row;
 
 }
@@ -140,7 +150,7 @@ function _getFullDataRange(s, fromCol, numCols) {
     var fromCol = fromCol || 1;
     var numCols = numCols || s.getLastColumn();
 
-    return s.getRange(1, fromCol, s.getLastRow(), numCols);
+    return s.getRange(1, fromCol, _getLastRowWithData(s), numCols);
 
 }
 
@@ -151,6 +161,20 @@ function getDataOnly(rows) {
 
     return data;
 
+}
+
+
+// Needed because if there are array formulas in sheet getLastRow() won't work and simply return the last row present in sheet
+function _getLastRowWithData(s) {
+    var data = s.getRange('A1:A').getValues();
+
+    for(var i = 0; i < data.length; i++) {
+        if(data[i][0] === '') {
+            break;
+        }
+    }
+
+    return i;
 }
 
 

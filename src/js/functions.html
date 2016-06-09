@@ -24,7 +24,11 @@ function getFormValues(container) {
 
         }
 
-        values.push(val);
+        if($(this).data('type') === 'formula' && val[0] !== '=') {
+            values.push('');
+        } else {
+            values.push(val);
+        }
 
     });
 

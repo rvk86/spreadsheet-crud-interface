@@ -8,13 +8,13 @@ function submitForm(atts) {
     atts.formValues[1] = Session.getActiveUser().getEmail();
 
     if(isNew) {
-        var lastId = s.getRange(s.getLastRow(), 1).getValue();
+        var lastId = s.getRange(_getLastRowWithData(s), 1).getValue();
         atts.formValues[0] = _.isNumber(lastId) ? lastId + 1 : 1;
 
         // The append row method doesn't detect the validations at first, so appending a row with invalid data is possible.
         // That's why this is necessary to catch errors right away. Not the most elegant way, think about alternatives.
         try {
-            var result = s.getRange(s.getLastRow() + 1, 1, 1, s.getLastColumn()).setValues([atts.formValues]);
+            var result = s.getRange(_getLastRowWithData(s) + 1, 1, 1, s.getLastColumn()).setValues([atts.formValues]);
             SpreadsheetApp.flush();
         } catch (e) {
             deleteRow({'sheetName': atts.sheetName, 'rowId': atts.formValues[0]});

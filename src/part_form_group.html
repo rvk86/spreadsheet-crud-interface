@@ -21,7 +21,11 @@ if(atts.options) {
     atts.options = createOptionsObject(atts.options, atts.value);
 }
 
-var input_atts = 'id="' + atts.id + '" name="' + atts.id + '" class="form-control ' + atts.classes + '" ' + atts.disabled + ' ' + atts.required;
+var input_atts = 'id="' + atts.id +
+               '" name="' + atts.id +
+               '" data-type="' + atts.type +
+               '" class="form-control ' + atts.classes +
+               '" ' + atts.disabled + ' ' + atts.required;
 
 for(var key in atts.dataAttributes) {
     input_atts += ' ' + key + '="' + atts.dataAttributes[key] + '"';
@@ -29,7 +33,9 @@ for(var key in atts.dataAttributes) {
 
 ?>
 
-<? if(atts.type !== 'hidden') { ?>
+<? if(atts.type === 'hidden' || atts.type === 'formula') { ?>
+    <input <?!= input_atts; ?> type="hidden" value="<?= atts.value; ?>">
+<? } else { ?>
     <div class="form-group">
 
         <? if(atts.label !== '') { ?>
@@ -53,6 +59,4 @@ for(var key in atts.dataAttributes) {
             <? } ?>
         </div>
     </div>
-<? } else { ?>
-    <input <?!= input_atts; ?> type="<?= atts.type; ?>" value="<?= atts.value; ?>">
 <? } ?>

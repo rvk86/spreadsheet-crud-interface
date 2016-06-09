@@ -35,15 +35,21 @@ Check it out here: https://script.google.com/macros/s/AKfycbyxwOdf4-TqNH86tKhA8Q
 ```
 
  * Valid options for the JSON are: type, value, label, options, required and disabled.
-     * type: can be "text", "textarea", "number", "date", "select". (see http://www.w3schools.com/tags/att_input_type.asp for more info)
+     * type: can be "text", "textarea", "number", "date", "select" or "formula". (see http://www.w3schools.com/tags/att_input_type.asp for more info)
      * value: sets the default value in the form view.
      * label: set a label for the field in the form interface. Should be a string.
      * help: a help text displayed directly below the field.
-     * options: only applicable with 'type' is set to "select". This can be an array, object or string, see 'Options' chapter below.
+     * options: only applicable with 'type' set to "select". This can be an array, object or string, see 'Options' chapter below.
      * required: if required is set to true, the form won't submit unless the field has a value.
      * disabled: Boolean value that disables the field in the form view.
  * Besides the spreadsheetId query parameter which is obligatory, you can pass two optional ones: template and atts. Template should be the name of a template part. The most interesting templates are part_funnel and part_table. atts should be a JSON string without spaces with necessary attributes. For part_funnel those are 'sheetName', 'funnelField' and optional 'user'. For part_table just needs 'sheetName'. example: `https://script.google.com/a/macros/polymathventures.co/s/AKfycbzzThAJUlhrYxUA0D-q24gjjVV9qK6oQ2HsEqMq-RE/dev?spreadsheetId=1Lzk4E1S69vbRvLGLn6NU0sjERLhKDxmX3Jeqnkmt0Ik&template=part_funnel&atts={"sheetName":"deal","funnelField":"stage"}`
 
+
+## Type: formula
+
+For fields that have {"type": "formula"}, you can set an Arrayformula in the first row of data (https://support.google.com/docs/answer/3093275?hl=en). Make sure you cover the a large range of data (e.g. A3:A999), but be careful with selecting the whole row (e.g. A3:A) because this could start adding and endless number of rows.
+
+Also notice that this requires some setup after adding the first row through the interface.
 
 
 ## Options
