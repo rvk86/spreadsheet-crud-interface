@@ -89,6 +89,32 @@ function getTitle(row) {
 
 }
 
+
+function getRelationships(atts) {
+
+    var sheetNames = getSheetList();
+
+    var relationships = {};
+    _.each(sheetNames, function(name) {
+        var rows = getAllRows(name);
+
+        for(var i in rows[0]) {
+
+            if(JSON.parse(rows[1][i])['options'] === atts.sheetName) {
+
+                relationships[name] = _.filter(rows, function(row) { return row[i] === atts.rowId; });
+                break;
+
+            }
+
+        }
+
+    });
+
+    return relationships;
+
+}
+
 // Generating the html on the backend is a looot faster than doing the loop in the template itself.
 function createOptionsObject(options, value) {
 

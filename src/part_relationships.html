@@ -1,0 +1,23 @@
+<? var relationships = getRelationships(atts); ?>
+
+<? for(var r in relationships) { ?>
+
+    <h3><?= r; ?></h3>
+
+    <ul>
+
+        <? for(var i in relationships[r]) { ?>
+
+            <li><a class="trigger-action"
+               href="#"
+               data-sheet-name="<?= r; ?>"
+               data-row-id="<?= relationships[r][i][0]; ?>"
+               data-template="part_single_row">
+                <?= getTitle(relationships[r][i]); ?>
+            </a></li>
+
+        <? } ?>
+
+    </ul>
+
+<? } ?>

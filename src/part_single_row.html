@@ -2,7 +2,7 @@
 sheetName
 rowId
  -->
- 
+
 <?
 
 var fields = getFormFields(atts.sheetName, atts.rowId);
@@ -38,37 +38,59 @@ var fields = getFormFields(atts.sheetName, atts.rowId);
     </div>
 </div>
 
-<div class="row row-margin">
-    <form class="form-horizontal col-sm-12" data-sheet-name="<?= atts.sheetName; ?>">
-        <fieldset>
-            <? for(var i in fields) { ?>
 
-                <div class="form-group">
+<ul class="nav nav-tabs" role="tablist">
+  <li role="presentation" class="active"><a href="#data" aria-controls="data" role="tab" data-toggle="tab">Data</a></li>
+  <li role="presentation"><a href="#relationships"
+                             aria-controls="relationships"
+                             role="tab"
+                             data-toggle="tab"
+                             class="trigger-action"
+                             data-template="part_relationships"
+                             data-sheet-name="<?= atts.sheetName; ?>"
+                             data-target="#relationships"
+                             data-after="removeTrigger"
+                             data-row-id="<?= atts.rowId; ?>">Relationships</a></li>
+</ul>
 
-                        <label class="col-sm-4 control-label" for="<?= fields[i].id; ?>"><?= fields[i].label || fields[i].id; ?></label>
+<!-- Tab panes -->
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane fade in active" id="data">
 
-                    <div class="col-sm-4">
-                        <p class="form-control-static">
-                            <? if(_.isString(fields[i].options) && fields[i].value !== '') { ?>
-                                <? var relation = findRow(fields[i].options, fields[i]['value']); ?>
-                                <a class="trigger-action"
-                                   href="#"
-                                   data-sheet-name="<?= fields[i].options; ?>"
-                                   data-row-id="<?= fields[i]['value']; ?>"
-                                   data-template="part_single_row">
-                                   <?= getTitle(relation); ?>
-                                </a>
-                            <? } else { ?>
-                                <?= fields[i].value; ?>
-                            <? } ?>
-                        </p>
+        <form class="form-horizontal col-sm-12" data-sheet-name="<?= atts.sheetName; ?>">
+          <fieldset>
+              <? for(var i in fields) { ?>
 
-                        <? if(fields[i].help) { ?>
-                            <span id="helpBlock" class="help-block"><?= fields[i].help; ?></span>
-                        <? } ?>
-                    </div>
-                </div>
-            <? } ?>
-        </fieldset>
-    </form>
+                  <div class="form-group">
+
+                          <label class="col-sm-4 control-label" for="<?= fields[i].id; ?>"><?= fields[i].label || fields[i].id; ?></label>
+
+                      <div class="col-sm-4">
+                          <p class="form-control-static">
+                              <? if(_.isString(fields[i].options) && fields[i].value !== '') { ?>
+                                  <? var relation = findRow(fields[i].options, fields[i]['value']); ?>
+                                  <a class="trigger-action"
+                                     href="#"
+                                     data-sheet-name="<?= fields[i].options; ?>"
+                                     data-row-id="<?= fields[i]['value']; ?>"
+                                     data-template="part_single_row">
+                                     <?= getTitle(relation); ?>
+                                  </a>
+                              <? } else { ?>
+                                  <?= fields[i].value; ?>
+                              <? } ?>
+                          </p>
+
+                          <? if(fields[i].help) { ?>
+                              <span id="helpBlock" class="help-block"><?= fields[i].help; ?></span>
+                          <? } ?>
+                      </div>
+                  </div>
+              <? } ?>
+          </fieldset>
+        </form>
+    </div>
+    <div role="tabpanel" class="tab-pane fade" id="relationships">
+        <h3>One second please...</h3>
+    </div>
 </div>

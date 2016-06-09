@@ -37,9 +37,9 @@ function getFormValues(container) {
 }
 
 
-function setContent(template, atts, after) {
+function setContent(template, atts, element) {
 
-    var target = '#dynamic-content';
+    var target = atts.target || '#dynamic-content';
 
     runFunction('templatePart', [template, atts], function(content) {
 
@@ -49,7 +49,7 @@ function setContent(template, atts, after) {
         $('.select2').select2({'theme': 'bootstrap'});
         $('.data-table').DataTable();
 
-        if(_.isFunction(after)) after.apply(this);
+        if(atts.after) window[atts.after](element);
 
         window.scrollTo(0, 0);
         loading.stop();
@@ -58,6 +58,9 @@ function setContent(template, atts, after) {
 
 }
 
+function removeTrigger(element) {
+    $(element).removeClass('trigger-action');
+}
 
 function runFunction(func, args, success) {
 

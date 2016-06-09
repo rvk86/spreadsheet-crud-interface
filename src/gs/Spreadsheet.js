@@ -200,10 +200,13 @@ function setValidationRule(optionsJSONRange) {
 
 function setup() {
 
-    var sheets = getSpreadsheet().getSheets();
+    var ss = getSpreadsheet();
+    var sheetList = getSheetList();
 
-    _.each(sheets, function(s) {
+    _.each(sheetList, function(sheetName) {
 
+        var s = ss.getSheetByName(sheetName);
+        
         _.each(_.range(1, s.getLastColumn() + 1), function(i) {
 
             setValidationRule(s.getRange(titleRows, i));
