@@ -51,6 +51,15 @@ function setContent(template, atts, element) {
 
         if(atts.after) window[atts.after](element);
 
+        if(target === '#dynamic-content') {
+            google.script.url.getLocation(function(location) {
+                google.script.history.push({'template': template, 'atts': atts},
+                                           {'spreadsheetId': location.parameter.spreadsheetId,
+                                            'template': template,
+                                            'atts': JSON.stringify(atts)});
+            });
+        }
+
         window.scrollTo(0, 0);
         loading.stop();
 
@@ -58,9 +67,21 @@ function setContent(template, atts, element) {
 
 }
 
+//Enable back button. A lot of improvement is possible here, to be explored
+google.script.history.setChangeHandler(function (e) {
+
+    loading.start();
+    setContent(e.state.template, e.state.atts);
+
+});
+
+
 function removeTrigger(element) {
+
     $(element).removeClass('trigger-action');
+
 }
+
 
 function runFunction(func, args, success) {
 

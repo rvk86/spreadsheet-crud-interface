@@ -1,11 +1,18 @@
-<!-- 
+<!--
 sheetName
 rowId
  -->
 <?
 
 var fields = getFormFields(atts.sheetName, atts.rowId);
-var isNew = fields[0]['value'] === '';
+
+for(var k in fields) {
+
+    fields[k]['value'] = fields[k]['value'] ? fields[k]['value'] : atts[k] || '';
+
+}
+
+var isNew = fields['_id']['value'] === '';
 
 ?>
 

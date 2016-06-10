@@ -20,18 +20,23 @@
                    data-action="duplicateRow"
                    data-sheet-name="<?= r; ?>"
                    data-row-id="<?= relationships[r][i][0]; ?>"
-                   data-template="part_form">
-                    <span aria-hidden="true">Duplicate row</span></a>)
+                   data-template="part_form"><span aria-hidden="true">Duplicate row</span></a>)
 
             </li>
 
         <? } ?>
 
-        <? if(relationships[r].length === 0) { ?>
-            <li>No <?= r; ?> found for this <?= atts.sheetName; ?></li>
-        <? } ?>
-
     </ul>
+
+    <a class="trigger-action"
+            href="#"
+            data-sheet-name="<?= r; ?>"
+            data-template="part_form"
+            data-<?!= atts.sheetName; ?>="<?= atts.rowId; ?>">
+        Add new <?= r; ?> to this <?= atts.sheetName; ?>
+    </a>
+
+    <hr />
 
 <? } ?>
 

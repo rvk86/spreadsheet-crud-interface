@@ -107,14 +107,14 @@ function getFormFields(sheetName, rowId) {
     var columnNames = getColumnNames(sheetName);
     var row = findRow(sheetName, rowId);
 
-    var fields = [];
+    var fields = {};
     for (var i in columnNames[0]) {
 
         var options = columnNames[1][i];
         options['id'] = options['id'] || columnNames[0][i];
         options['value'] = row ? row[i] : options['value'] ? options['value'] : '';
 
-        fields.push(options);
+        fields[columnNames[0][i]] = options;
 
     };
 
