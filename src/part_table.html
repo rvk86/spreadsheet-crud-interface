@@ -9,6 +9,7 @@ var columnNames = getColumnNames(atts.sheetName)[0];
 
 ?>
 
+<? if(operationPermitted(atts.sheetName, 'create')) { ?>
 <div class="row row-margin">
     <div class="btn-group col-sm-12" role="group">
         <button class="trigger-action btn btn-info"
@@ -19,6 +20,7 @@ var columnNames = getColumnNames(atts.sheetName)[0];
         </button>
     </div>
 </div>
+<? } ?>
 
 <div class="row row-margin">
     <div class="col-sm-12">

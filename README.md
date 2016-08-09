@@ -46,12 +46,17 @@ Check it out here: https://script.google.com/macros/s/AKfycbyxwOdf4-TqNH86tKhA8Q
 
 ## Type: formula
 
-For fields that have {"type": "formula"}, you can set an Arrayformula in the first row of data (https://support.google.com/docs/answer/3093275?hl=en). Make sure you cover the a large range of data (e.g. A3:A999), but be careful with selecting the whole row (e.g. A3:A) because this could start adding and endless number of rows.
+For fields that have {"type": "formula"}, you can set an Arrayformula in the first row of data (https://support.google.com/docs/answer/3093275?hl=en). Make sure you cover a large range of data (e.g. A3:A999), but be careful with selecting the whole row (e.g. A3:A) because this could start adding and endless number of rows.
 
 It is important that for empty rows, the array formula returns an empty string and not an error or 0.
 
 Also notice that this requires some setup after adding the first row through the interface.
 
+In stead of hard coding the JSON, it is better to put the formula of the calculated column in the JSON cell. This cell should still output valid json, so this only works if you do a concatenation like this:
+
+```js
+={{"{""type"": ""formula""}"}; ArrayFormula(C3:C1000)}
+```
 
 ## Options
 
@@ -76,6 +81,21 @@ If you set it to a string, it should reference another sheet in the same spreads
 {"type": "select", "label": "Person", "options": "person"}
 
 ```
+
+## permissions
+
+The tool has a basic way of implementing roles and permissions. To start using it follow these steps:
+
+ * Create a _roles and _users sheet.
+ * In the _roles sheet, define a role name (start in cell A1) and a role object (cell B2). The role object should have the following structure:
+
+ ```js
+
+ {"sheets": {"Sheet1": ["create", "update", "delete"]}, "hidden_fields": ["Sheet1.column_name"]}
+
+ ```
+ * In the _users sheet you can assign a role to a user. Specify an email address (start in cell A1), and his/her role (cell B2)
+
 
 ## Side notes
 

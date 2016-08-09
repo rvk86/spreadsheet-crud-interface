@@ -12,6 +12,7 @@ var row = _.map(fields, function(field) { return field['value']; });
 
 <div class="row row-margin">
     <div class="btn-group col-sm-12" role="group">
+        <? if(operationPermitted(atts.sheetName, 'delete')) { ?>
             <button class="trigger-action btn btn-warning"
                   href="#"
                   type="button"
@@ -22,6 +23,8 @@ var row = _.map(fields, function(field) { return field['value']; });
                   data-modal="Row succesfully deleted.">
                   <span aria-hidden="true">Delete row</span>
             </button>
+        <? } ?>
+        <? if(operationPermitted(atts.sheetName, 'update')) { ?>
             <button class="trigger-action btn btn-info"
                href="#"
                type="button"
@@ -30,6 +33,8 @@ var row = _.map(fields, function(field) { return field['value']; });
                data-template="part_form">
                 <span aria-hidden="true">Edit row</span>
             </button>
+        <? } ?>
+        <? if(operationPermitted(atts.sheetName, 'create')) { ?>
             <button class="trigger-action btn btn-success"
                href="#"
                type="button"
@@ -39,6 +44,7 @@ var row = _.map(fields, function(field) { return field['value']; });
                data-template="part_form">
                 <span aria-hidden="true">Duplicate row</span>
             </button>
+        <? } ?>
     </div>
 </div>
 

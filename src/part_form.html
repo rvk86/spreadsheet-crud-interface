@@ -9,29 +9,13 @@ var fields = getFormFields(atts.sheetName, atts.rowId);
 for(var k in fields) {
 
     fields[k]['value'] = fields[k]['value'] ? fields[k]['value'] : atts[k] || '';
+    fields[k]['hide_key'] = atts.sheetName + '.' + k;
 
 }
 
 var isNew = fields['_id']['value'] === '';
 
 ?>
-
-<div class="row row-margin">
-    <div class="btn-group col-sm-12" role="group">
-        <? if(!isNew) { ?>
-            <button class="trigger-action btn btn-warning"
-                  href="#"
-                  type="button"
-                  data-action="deleteRow"
-                  data-sheet-name="<?= atts.sheetName; ?>"
-                  data-row-id="<?= atts.rowId; ?>"
-                  data-template="part_table"
-                  data-modal="Row succesfully deleted.">
-                  <span aria-hidden="true">Delete row</span>
-            </button>
-        <? } ?>
-    </div>
-</div>
 
 <div class="row row-margin">
     <div class="col-sm-offset-4 col-sm-4">

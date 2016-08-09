@@ -1,12 +1,11 @@
 function getSheetList() {
 
     var sheets = getSpreadsheet().getSheets();
-
     var sheetList = [];
     _.each(sheets, function(s) {
 
         var sName = s.getName();
-        if(sName[0] !== '_') sheetList.push(sName);
+        if(sName[0] !== '_' && hasSheetAccess(sName)) sheetList.push(sName);
 
     });
 
@@ -206,7 +205,7 @@ function setup() {
     _.each(sheetList, function(sheetName) {
 
         var s = ss.getSheetByName(sheetName);
-        
+
         _.each(_.range(1, s.getLastColumn() + 1), function(i) {
 
             setValidationRule(s.getRange(titleRows, i));

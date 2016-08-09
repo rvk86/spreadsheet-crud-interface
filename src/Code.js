@@ -20,6 +20,7 @@ function doGet(e) {
     t.params.dateFormat = dateFormat;
 
     userProperties.setProperty('params', JSON.stringify(e.parameters));
+    queryParams.spreadsheetId = t.params.spreadsheetId;
 
     return t.evaluate()
             .setTitle('Spreadsheet CRUD interface')

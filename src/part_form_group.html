@@ -21,6 +21,11 @@ if(atts.options) {
     atts.options = createOptionsObject(atts.options, atts.value);
 }
 
+if(isHiddenField(atts.hide_key)) {
+    atts.type = 'hidden';
+    atts.required = '';
+}
+
 var input_atts = 'id="' + atts.id +
                '" name="' + atts.id +
                '" data-type="' + atts.type +
