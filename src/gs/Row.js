@@ -13,7 +13,7 @@ function submitForm(atts) {
         var result = updateRow(s, atts.formValues);
     }
 
-    runTriggers(atts.sheetName, isNew, atts.formValues);
+    runTriggers(atts.sheetName, isNew, result);
 
     return {'rowId': result[0]};
 
@@ -24,6 +24,17 @@ function _appendRow(s, values) {
 
     var lastId = s.getRange(_getLastRowWithData(s), 1).getValue();
     values[0] = _.isNumber(lastId) ? lastId + 1 : 1;
+
+    var sheetName = s.getName();
+    var columnNames = getColumnNames(sheetName);
+
+    _.each(values, function(c, index) {
+
+        if(columnNames[1][index]['type'].indexOf('formula') > -1) {
+            values[index] = '';
+        }
+
+    });
 
     // The append row method doesn't detect the validations at first, so appending a row with invalid data is possible.
     // That's why this is necessary to catch errors right away. Not the most elegant way, think about alternatives.
@@ -39,7 +50,7 @@ function _appendRow(s, values) {
 
     }
 
-    return values;
+    return findRow(s.getName(), values[0]);
 
 }
 
@@ -49,20 +60,9 @@ function duplicateRow(atts) {
     var s = getSpreadsheet().getSheetByName(atts.sheetName);
     var values = findRow(atts.sheetName, atts.rowId);
 
-    _appendRow(s, stripFormulas(values));
+    _appendRow(s, values);
 
     return {'rowId': values[0]};
-
-}
-
-
-function stripFormulas(values) {
-
-    for(var i in values) {
-        values[i] = values[i][0] === '=' ? '' : values[i];
-    }
-
-    return values;
 
 }
 
@@ -116,7 +116,7 @@ function updateRow(s, values) {
     var position = getRowPosition(s, values[0]);
     s.getRange(position, 1, 1, s.getLastColumn()).setValues([values]);
 
-    return values;
+    return findRow(s.getName(), values[0]);
 
 }
 

@@ -3,13 +3,18 @@
 atts.id = atts.id || '';
 atts.classes = atts.classes || '';
 atts.label = atts.label || atts.id;
-atts.value = atts.type === 'date' ?
-                            moment(atts.value).format('YYYY-MM-DD') :
-                            atts.value;
 atts.type = atts.type || 'text';
 atts.help = atts.help || '';
 atts.disabled = atts.disabled ? 'disabled' : '';
 atts.required = atts.required ? 'required' : '';
+
+if(atts.type === 'date') {
+    atts.value = moment(atts.value).format('YYYY-MM-DD');
+} else if(atts.value === 'Session.user') {
+    atts.value = Session.getActiveUser().getEmail();
+} else {
+    atts.value = atts.value;
+}
 
 if(atts.options) {
 
@@ -38,7 +43,7 @@ for(var key in atts.dataAttributes) {
 
 ?>
 
-<? if(atts.type === 'hidden' || atts.type === 'formula') { ?>
+<? if(atts.type === 'hidden' || atts.type.indexOf('formula') > -1) { ?>
     <input <?!= input_atts; ?> type="hidden" value="<?= atts.value; ?>">
 <? } else { ?>
     <div class="form-group">

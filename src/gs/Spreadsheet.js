@@ -57,7 +57,7 @@ function copySpreadsheet() {
 
 function getTriggers() {
 
-    var triggers = JSON.parse(userProperties.getProperty(queryParams.spreadsheetId));
+    var triggers = JSON.parse(scriptProperties.getProperty(queryParams.spreadsheetId));
     triggers = _.isArray(triggers) ? triggers : [];
 
     return triggers;
@@ -69,7 +69,7 @@ function deleteTrigger(atts) {
 
     var triggers = _.filter(getTriggers(), function(val, i) { return i !== atts.triggerIndex; });
 
-    userProperties.setProperty(queryParams.spreadsheetId, JSON.stringify(triggers));
+    scriptProperties.setProperty(queryParams.spreadsheetId, JSON.stringify(triggers));
 
 }
 
@@ -84,7 +84,7 @@ function saveTrigger(atts) {
         triggers.push(atts.formValues);
     }
 
-    userProperties.setProperty(queryParams.spreadsheetId, JSON.stringify(triggers));
+    scriptProperties.setProperty(queryParams.spreadsheetId, JSON.stringify(triggers));
 
 }
 

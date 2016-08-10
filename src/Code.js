@@ -1,6 +1,7 @@
 var _ = Underscore.load();
 var moment = Moment.load();
 var userProperties = PropertiesService.getUserProperties();
+var scriptProperties = PropertiesService.getScriptProperties();
 var queryParams = JSON.parse(userProperties.getProperty('params'));
 
 var titleRows = 2;

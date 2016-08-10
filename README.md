@@ -44,6 +44,9 @@ Check it out here: https://script.google.com/macros/s/AKfycbyxwOdf4-TqNH86tKhA8Q
      * disabled: Boolean value that disables the field in the form view.
 
 
+## Type: email
+If you set 'value' to 'Session.user' the value of the field will default to the current users' email address.
+
 ## Type: formula
 
 For fields that have {"type": "formula"}, you can set an Arrayformula in the first row of data (https://support.google.com/docs/answer/3093275?hl=en). Make sure you cover a large range of data (e.g. A3:A999), but be careful with selecting the whole row (e.g. A3:A) because this could start adding and endless number of rows.

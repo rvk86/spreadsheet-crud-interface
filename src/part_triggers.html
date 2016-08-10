@@ -11,7 +11,7 @@ if(atts.sheetName) {
 
     emailColumns = _.filter(emailColumns[0], function(val, i) {
 
-        return emailColumns[1][i]['type'] === 'email';
+        return emailColumns[1][i]['type'].indexOf('email') > -1;
 
     });
 }

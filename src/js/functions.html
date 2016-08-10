@@ -24,7 +24,7 @@ function getFormValues(container) {
 
         }
 
-        if($(this).data('type') === 'formula' && val[0] !== '=') {
+        if($(this).data('type').indexOf('formula') > -1 && val[0] !== '=') {
             values.push('');
         } else {
             values.push(val);
