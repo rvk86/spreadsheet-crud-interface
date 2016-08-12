@@ -10,7 +10,7 @@ function submitForm(atts) {
     if(isNew) {
         var result = _appendRow(s, atts.formValues);
     } else {
-        var result = updateRow(s, atts.formValues);
+        var result = _updateRow(s, atts.formValues);
     }
 
     runTriggers(atts.sheetName, isNew, result);
@@ -99,19 +99,15 @@ function updateCell(atts) {
     var s = getSpreadsheet().getSheetByName(atts.sheetName);
 
     var position = getRowPosition(s, atts.rowId);
-    var range = s.getRange(position, 1, 1, s.getLastColumn());
+    var range = s.getRange(position, atts.columnIndex + 1).setValue(atts.value);
 
-    var values = range.getValues()[0];
-    values[atts.columnIndex] = atts.value;
-
-    range.setValues([values]);
-
-    runTriggers(atts.sheetName, false, values);
+    var row = findRow(atts.sheetName, atts.rowId);
+    runTriggers(atts.sheetName, false, row);
 
 }
 
 
-function updateRow(s, values) {
+function _updateRow(s, values) {
 
     var position = getRowPosition(s, values[0]);
     s.getRange(position, 1, 1, s.getLastColumn()).setValues([values]);

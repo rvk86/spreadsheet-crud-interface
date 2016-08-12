@@ -70,7 +70,7 @@ var users = getUsers(atts.sheetName);
                                                aria-hidden="true"
                                                data-action="updateCell"
                                                data-template="part_funnel"
-                                               data-user="<?= atts.user; ?>"
+                                               data-user="<?= atts.user || ''; ?>"
                                                data-funnel-field="<?=atts.funnelField; ?>"
                                                data-sheet-name="<?= atts.sheetName; ?>"
                                                data-row-id="<?= groups[options[j]][k][0]; ?>"
