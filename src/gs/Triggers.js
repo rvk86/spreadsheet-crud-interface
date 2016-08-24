@@ -54,7 +54,7 @@ function runTriggers(sheetName, isNew, values) {
             if(triggers[t][2] !== '') {
 
                 var columnIndex = columnNames[0].indexOf(triggers[t][2]);
-                emails.push(values[columnIndex]);
+                if(values[columnIndex] !== '') emails.push(values[columnIndex]);
 
             }
 

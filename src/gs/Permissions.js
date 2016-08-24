@@ -36,7 +36,11 @@ function operationPermitted(sheetName, operation) {
     var permissions = getPermissions();
     if(!permissions) { return true; }
 
-    return permissions['sheets'][sheetName].indexOf(operation) > -1;
+    var sheetPerm = permissions['sheets'][sheetName];
+
+    if(!sheetPerm) throw "Your role in the system doesn't permit this operation.";
+
+    return sheetPerm.indexOf(operation) > -1;
 
 }
 
