@@ -40,7 +40,19 @@ function operationPermitted(sheetName, operation) {
 
     if(!sheetPerm) throw "Your role in the system doesn't permit this operation.";
 
-    return sheetPerm.indexOf(operation) > -1;
+    return sheetPerm.indexOf(operation) > -1 || sheetPerm.indexOf('all') > -1;
+
+}
+
+
+function checkViewPermissions(atts) {
+
+    var operation = atts.rowId ? 'edit' : 'create';
+    var permitted = operationPermitted(atts.sheetName, operation);
+
+    if(!permitted) {
+      throw "Your don't have access to this view";
+    }
 
 }
 

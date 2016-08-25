@@ -25,7 +25,7 @@ function doGet(e) {
 
     return t.evaluate()
             .setTitle('Spreadsheet CRUD interface')
-            .setFaviconUrl('http://www.polymathv.com/new/wp-content/uploads/2016/05/12771386-e1464724136365.png')
+            .setFaviconUrl('http://www.polymathv.com/wp-content/uploads/cropped-pv_favi-e1468429129936-32x32.png')
             .setSandboxMode(HtmlService.SandboxMode.IFRAME);
 
 };

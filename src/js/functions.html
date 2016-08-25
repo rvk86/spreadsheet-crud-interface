@@ -111,9 +111,11 @@ var loading = {
 
     start: function() {
         $('.progress').show();
+        $('button, a').addClass('disabled');
     },
 
     stop: function() {
+        $('button, a').removeClass('disabled');
         $('.progress').hide();
     }
 

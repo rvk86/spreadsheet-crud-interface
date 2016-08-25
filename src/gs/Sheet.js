@@ -73,26 +73,35 @@ function getHtmlRows(sheetName) {
 
     var htmlRows = '';
 
-    for(var i in rows) {
+    var perms = getPermissions();
+    var sheetPerms = perms['sheets'][sheetName];
+    var view = sheetPerms.indexOf('view') > -1 || sheetPerms.indexOf('all') > -1;
+    var view_self = perms['sheets'][sheetName].indexOf('view_self') > -1;
+    if(view || view_self) {
+        for(var i in rows) {
 
-        var htmlRow = '<tr>';
+          // if view_self only show rows that are created by current user
+          if(!view && rows[i][1] !== Session.getActiveUser().getEmail()) continue;
 
-        for(var c = auditColumns; c < rows[i].length; c++) {
-            var value = _.isDate(rows[i][c]) ? moment(rows[i][c]).format(dateFormat) : rows[i][c];
-            htmlRow +=  '<td>' +
-                            '<a class="trigger-action"' +
-                               'href="#"' +
-                               'data-sheet-name="' + sheetName + '"' +
-                               'data-row-id="' + rows[i][0] + '"' +
-                               'data-template="part_single_row">' +
-                               value +
-                            '</a>' +
-                        '</td>';
+            var htmlRow = '<tr>';
+
+            for(var c = auditColumns; c < rows[i].length; c++) {
+                var value = _.isDate(rows[i][c]) ? moment(rows[i][c]).format(dateFormat) : rows[i][c];
+                htmlRow +=  '<td>' +
+                                '<a class="trigger-action"' +
+                                   'href="#"' +
+                                   'data-sheet-name="' + sheetName + '"' +
+                                   'data-row-id="' + rows[i][0] + '"' +
+                                   'data-template="part_single_row">' +
+                                   value +
+                                '</a>' +
+                            '</td>';
+            }
+
+            htmlRow += '</tr>';
+
+            htmlRows += htmlRow;
         }
-
-        htmlRow += '</tr>';
-
-        htmlRows += htmlRow;
     }
 
     return htmlRows;

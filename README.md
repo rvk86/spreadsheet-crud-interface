@@ -61,6 +61,8 @@ In stead of hard coding the JSON, it is better to put the formula of the calcula
 ={{"{""type"": ""formula""}"}; ArrayFormula(C3:C1000)}
 ```
 
+If you want the formula column to be recognized as an email column (for adding a trigger for example), you can set the type of the column like this `"type": "formula: email"`
+
 ## Options
 
 For fields that have {"type": "select"}, you should also define the "options" attribute. This can be three things:
@@ -94,9 +96,13 @@ The tool has a basic way of implementing roles and permissions. To start using i
 
  ```js
 
- {"sheets": {"Sheet1": ["create", "update", "delete"]}, "hidden_fields": ["Sheet1.column_name"]}
+ {"sheets": {"Sheet1": ["view", "create", "update", "delete"]},
+  "menu": ["Data", "Funnels", "Settings", "Search"],
+  "hidden_fields": ["Sheet1.column_name"]}
 
  ```
+ If a role has all permissions for a certain sheet you can replace `"view", "create", "update", "delete"` by `"all"`. If a role should only be able to see rows created by the user itself, replace `"view"` by `"view_self"`. If all menu items should be visible you can leave `"menu"` out.
+
  * In the _users sheet you can assign a role to a user. Specify an email address (start in cell A1), and his/her role (cell B2)
 
 

@@ -49,6 +49,11 @@ function runTriggers(sheetName, isNew, values) {
             _.each(values, function(val, index) { body += '<tr><td>' + columnNames[0][index] + '</td><td>' + val + '</td></tr>'; });
             body += '</table>';
 
+            body += '<p>To edit the row: ';
+            body += encodeURI(ScriptApp.getService().getUrl() +
+            '?spreadsheetId=' + queryParams.spreadsheetId +
+            '&template=part_form&atts={"rowId":' + values[0] + ',"sheetName":"' + sheetName + '"}');
+
             var subject = triggers[t][4] !== '' ? triggers[t][4] : 'Trigger fired ' + action;
 
             if(triggers[t][2] !== '') {
