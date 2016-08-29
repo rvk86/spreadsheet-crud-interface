@@ -11,12 +11,13 @@ Check it out here: https://script.google.com/macros/s/AKfycbyxwOdf4-TqNH86tKhA8Q
  * Have relationships between sheets (available as dropdowns in the input forms)
  * For 'select' columns show drag & drop funnel
  * Create triggers to send emails on add or update of rows
+ * A basic roles/permissions system
  * Copy spreadsheet for further data analysis
 
 ## Usage
 
  * When accessing the app, add a query parameter to the url "?spreadsheetId=???", replacing ??? by your spreadsheet ID.
- * Each sheet represents a data type (person, organization, deal). Names should not contain spaces & should be singular. Sheets with a name that starts with an underscore will not show up in the interface.
+ * Each sheet represents a data type (person, organization, deal). Names should not contain spaces & should be singular. Sheets with a name that starts with an underscore will not show up in the interface. Those can be used for analysis of the 'data' sheets.
  * Each column represents a data field. Put the field names on the first row of the sheet. Names should be unique and should not contain spaces.
  * On the second row of each sheet a JSON string should be defined with the characteristics of the field.
 
@@ -68,24 +69,24 @@ If you want the formula column to be recognized as an email column (for adding a
 For fields that have {"type": "select"}, you should also define the "options" attribute. This can be three things:
 
  * An array [1,2,3]
- * An object {"key1": "val1", "key2": "val2"}
+ * An object {"key1": "val1", "key2": "val2"}, where "key" would be the display key in the dropdown and "value" the value stored in the spreadsheet.
  * A string (reference to another sheet)
 
-If "options" is defined as an array, automatically a funnel view becomes available for this field under the "funnels" item in the menu.
+If "options" is defined as an array, automatically a funnel view becomes available for this field under the "funnels" item in the menu. Note that the last option in the array will not be shown in the funnel. This is a way to archive rows that shouldn't be visible anymore in the funnel.
 
 ```js
 
-{"type": "select", "label": "status", "options": ["Pending", "Active", "Canceled"]}
+{"type": "select", "label": "status", "options": ["Pending", "Active", "Canceled", "Archived"]}
 
 ```
 
 If you set it to a string, it should reference another sheet in the same spreadsheet. The form interface will show a dropdown with all rows from the referenced sheet.
 
 ```js
-
 {"type": "select", "label": "Person", "options": "person"}
-
 ```
+
+Where "person" is the name of another sheet.
 
 ## permissions
 
