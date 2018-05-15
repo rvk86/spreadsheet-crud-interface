@@ -110,6 +110,9 @@ The tool has a basic way of implementing roles and permissions. To start using i
 ## Development
 
  * Clone repo
+ * `yarn` install node_modules
+ * `bower install` install bower_modules
+ * `yarn gulp` build assets
  * Install clasp (https://github.com/google/clasp)
  * `cd src && clasp create` (you first might need to remove the .clasp.json file)
  * Tweak appsscript.json file if needed
