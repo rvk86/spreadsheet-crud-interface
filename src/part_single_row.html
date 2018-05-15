@@ -24,7 +24,7 @@ var row = _.map(fields, function(field) { return field['value']; });
                   <span aria-hidden="true">Delete row</span>
             </button>
         <? } ?>
-        <? if(operationPermitted(atts.sheetName, 'update')) { ?>
+        <? if(operationPermitted(atts.sheetName, 'edit')) { ?>
             <button class="trigger-action btn btn-info"
                href="#"
                type="button"

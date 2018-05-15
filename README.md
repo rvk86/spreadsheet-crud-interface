@@ -92,19 +92,31 @@ Where "person" is the name of another sheet.
 
 The tool has a basic way of implementing roles and permissions. To start using it follow these steps:
 
- * Create a _roles and _users sheet.
- * In the _roles sheet, define a role name (start in cell A1) and a role object (cell B2). The role object should have the following structure:
+ * Create a _permissions and _users sheet.
+ * In the _permissions sheet, define a role name (start in cell A1) and a role object (cell B2). The role object should have the following structure:
 
  ```js
 
- {"sheets": {"Sheet1": ["view", "create", "update", "delete"]},
+ {"sheets": {"Sheet1": ["view", "create", "edit", "delete"]},
   "menu": ["Data", "Funnels", "Settings", "Search"],
   "hidden_fields": ["Sheet1.column_name"]}
 
  ```
- If a role has all permissions for a certain sheet you can replace `"view", "create", "update", "delete"` by `"all"`. If a role should only be able to see rows created by the user itself, replace `"view"` by `"view_self"`. If all menu items should be visible you can leave `"menu"` out.
+ If a role has all permissions for a certain sheet you can replace `"view", "create", "edit", "delete"` by `"all"`. If a role should only be able to see rows created by the user itself, replace `"view"` by `"view_self"`. If all menu items should be visible you can leave `"menu"` out.
 
  * In the _users sheet you can assign a role to a user. Specify an email address (start in cell A1), and his/her role (cell B2)
+
+
+## Development
+
+ * Clone repo
+ * Install clasp (https://github.com/google/clasp)
+ * `cd src && clasp create` (you first might need to remove the .clasp.json file)
+ * Tweak appsscript.json file if needed
+ * `clasp push`
+ * Add libraries in newly created apps script project in browser (Resources -> Libraries)
+    * Underscore: M3i7wmUA_5n0NSEaa6NnNqOBao7QLBR4j
+    * Moment: MHMchiX6c1bwSqGM1PZiW_PxhMjh3Sh48
 
 
 ## Side notes
@@ -112,8 +124,16 @@ The tool has a basic way of implementing roles and permissions. To start using i
  * In both the options drop down referencing another sheet, the funnel view and the search box, the first two columns of the sheet are shown. So make sure those two columns are unique enough to determine which row it is.
  * The main advantage of using this tool is that you think more explicitly about the data structure of your process.
 
+
 ## Known limitations
 
  * Makes use of html5 field types, so only works in modern browsers. (Chrome preferred)
  * When deleting rows, relationships will not be deleted. This means that rows might point to a non-existing row in the related sheet.
  * With a lot of rows, the tool can become slow. A solution could be to archive the file (make a copy through the interface) and delete rows from the original file.
+
+
+## TODO
+
+ * Make _users and _permissions sheets optional
+ * Add merge tags to email triggers
+ * Speed optimizations

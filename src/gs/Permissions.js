@@ -51,7 +51,7 @@ function checkViewPermissions(atts) {
     var permitted = operationPermitted(atts.sheetName, operation);
 
     if(!permitted) {
-      throw "Your don't have access to this view";
+      throw "You don't have access to this view";
     }
 
 }

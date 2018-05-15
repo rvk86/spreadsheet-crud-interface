@@ -46,13 +46,11 @@
             </div>
         </div>
 
-        <?!= include('js'); ?> <!-- Compiled bower assets -->
+        <?!= include('assets/js'); ?> <!-- Compiled bower assets -->
         <script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/datetime-moment.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/Sortable/1.4.2/Sortable.min.js"></script>
-        <?!= include('functions'); ?>
-        <?!= templatePart('javascript', params); ?>
-        <?!= include('typeahead'); ?>
+        <?!= include('js/functions'); ?>
+        <?!= templatePart('js/javascript', params); ?>
+        <?!= include('js/typeahead'); ?>
     </body>
 </html>
-
-
